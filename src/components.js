@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Header Component - Floating Navbar
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,19 +13,28 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Function to close mobile menu
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  // Handle mobile menu toggle
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <motion.header 
-      className={`fixed top-4 z-50 transition-all duration-300 ${
+      className={`fixed top-4 left-4 right-4 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-black/90 backdrop-blur-lg shadow-2xl border border-gray-800' 
           : 'bg-black/60 backdrop-blur-sm border border-gray-700'
-      } rounded-2xl`}
+      } rounded-2xl max-w-full`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      style={{width: "100%"}}
     >
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-6 py-4 max-w-full">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <motion.div 
@@ -58,10 +66,21 @@ export const Header = () => {
           {/* Mobile Menu Toggle */}
           <button
             className="md:hidden text-white p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            <svg 
+              className="w-6 h-6 transition-transform duration-300" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              style={{ transform: isMobileMenuOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}
+            >
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
             </svg>
           </button>
         </div>
@@ -77,12 +96,15 @@ export const Header = () => {
               transition={{ duration: 0.3 }}
             >
               <nav className="flex flex-col space-y-4 pt-4">
-                <NavLink href="#home" mobile>Home</NavLink>
-                <NavLink href="#services" mobile>Services</NavLink>
-                <NavLink href="#about" mobile>About</NavLink>
-                <NavLink href="#projects" mobile>Projects</NavLink>
-                <NavLink href="#contact" mobile>Contact</NavLink>
-                <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full text-left font-semibold">
+                <NavLink href="#home" mobile onClose={closeMobileMenu}>Home</NavLink>
+                <NavLink href="#services" mobile onClose={closeMobileMenu}>Services</NavLink>
+                <NavLink href="#about" mobile onClose={closeMobileMenu}>About</NavLink>
+                <NavLink href="#projects" mobile onClose={closeMobileMenu}>Projects</NavLink>
+                <NavLink href="#contact" mobile onClose={closeMobileMenu}>Contact</NavLink>
+                <button 
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full text-left font-semibold hover:shadow-lg transition-all duration-300"
+                  onClick={closeMobileMenu}
+                >
                   Get Started
                 </button>
               </nav>
@@ -94,17 +116,58 @@ export const Header = () => {
   );
 };
 
-const NavLink = ({ href, children, mobile = false }) => (
-  <motion.a
-    href={href}
-    className={`text-white hover:text-emerald-400 transition-colors duration-200 font-medium ${
-      mobile ? 'block py-2' : ''
-    }`}
-    whileHover={{ y: -2 }}
-  >
-    {children}
-  </motion.a>
-);
+const NavLink = ({ href, children, mobile = false, onClose }) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    
+    // For mobile, we need to handle this differently
+    if (mobile) {
+      // First scroll to the target
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        const headerHeight = 100;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
+        // Close menu after scroll starts
+        setTimeout(() => {
+          onClose();
+        }, 300);
+      }
+    } else {
+      // Desktop navigation
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        const headerHeight = 100;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
+  return (
+    <motion.a
+      href={href}
+      className={`text-white hover:text-emerald-400 transition-colors duration-200 font-medium cursor-pointer ${
+        mobile ? 'block py-2' : ''
+      }`}
+      whileHover={{ y: -2 }}
+      onClick={handleClick}
+    >
+      {children}
+    </motion.a>
+  );
+};
 
 // Hero Component - Updated with AI automation background and modern typography
 export const Hero = () => {
@@ -176,7 +239,7 @@ export const Hero = () => {
         >
           {/* Small accent text */}
           <motion.p
-            className="text-accent text-emerald-400 mb-4 opacity-90"
+            className="text-accent text-emerald-400 mb-4 opacity-90 text-sm sm:text-base"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
@@ -184,10 +247,9 @@ export const Hero = () => {
             NEXT-GENERATION AI SOLUTIONS
           </motion.p>
           
-          {/* Huge hero title with modern typography */}
+          {/* Responsive hero title with mobile-first approach */}
           <motion.h1
-            className="hero-text text-white mb-6"
-            style={{fontSize: 70}}
+            className="hero-text text-white mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -199,9 +261,9 @@ export const Hero = () => {
             </span>
           </motion.h1>
           
-          {/* Medium subtitle */}
+          {/* Responsive subtitle */}
           <motion.p
-            className="hero-subtitle text-gray-200 mb-8 max-w-4xl mx-auto opacity-90"
+            className="hero-subtitle text-gray-200 mb-8 max-w-4xl mx-auto opacity-90 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -209,36 +271,36 @@ export const Hero = () => {
             We create intelligent AI agents, cutting-edge websites, and automation systems that transform how businesses operate in the digital age.
           </motion.p>
           
-          {/* Stats row with small text */}
+          {/* Stats row with responsive layout */}
           <motion.div
-            className="flex flex-wrap justify-center gap-8 mb-8"
+            className="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mb-8 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <div className="text-center">
-              <div className="text-3xl font-bold text-white font-display">50+</div>
-              <div className="text-small text-gray-400">Projects Delivered</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">50+</div>
+              <div className="text-xs sm:text-sm text-gray-400">Projects Delivered</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-white font-display">100%</div>
-              <div className="text-small text-gray-400">Client Satisfaction</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">100%</div>
+              <div className="text-xs sm:text-sm text-gray-400">Client Satisfaction</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-white font-display">24/7</div>
-              <div className="text-small text-gray-400">AI Support</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">24/7</div>
+              <div className="text-xs sm:text-sm text-gray-400">AI Support</div>
             </div>
           </motion.div>
           
-          {/* CTA Buttons */}
+          {/* Responsive CTA Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <motion.button
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 tracking-wide"
+              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:shadow-xl transition-all duration-300 tracking-wide"
               whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.3)" }}
               whileTap={{ scale: 0.95 }}
             >
@@ -246,7 +308,7 @@ export const Hero = () => {
             </motion.button>
             
             <motion.button
-              className="border-2 border-white/80 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm"
+              className="w-full sm:w-auto border-2 border-white/80 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -256,7 +318,7 @@ export const Hero = () => {
           
           {/* Small bottom text */}
           <motion.p
-            className="text-small text-gray-400 mt-8 opacity-70"
+            className="text-xs sm:text-sm text-gray-400 mt-6 mb-5 sm:mt-8 opacity-70 px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -592,7 +654,7 @@ export const Services = () => {
   );
 };
 
-// About Us Component - Updated with modern typography
+// About Us Component - Fixed for responsive layout
 export const AboutUs = () => {
   const teamMembers = [
     {
@@ -622,61 +684,62 @@ export const AboutUs = () => {
   ];
 
   return (
-    <section id="about" className="py-20 px-6 bg-black text-white">
-      <div className="container mx-auto">
+    <section id="about" className="py-20 px-6 bg-black text-white overflow-x-hidden">
+      <div className="container mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="max-w-full"
           >
-            <p className="text-accent text-emerald-400 mb-4">WHO WE ARE</p>
+            <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">WHO WE ARE</p>
             
-            <h2 className="section-title mb-6">
+            <h2 className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
               About <span className="gradient-text">X-Web Labs</span>
             </h2>
             
-            <p className="section-subtitle text-gray-300 mb-6">
+            <p className="section-subtitle text-gray-300 mb-6 text-base sm:text-lg leading-relaxed">
               We are a cutting-edge AI automation agency dedicated to transforming businesses through intelligent technology solutions.
             </p>
             
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                <span className="text-gray-300">Founded with a vision to democratize AI technology</span>
+                <div className="w-2 h-2 bg-emerald-400 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-300 text-sm sm:text-base">Founded with a vision to democratize AI technology</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-                <span className="text-gray-300">50+ successful projects delivered</span>
+                <div className="w-2 h-2 bg-teal-400 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-300 text-sm sm:text-base">50+ successful projects delivered</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                <span className="text-gray-300">Trusted by enterprises worldwide</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-300 text-sm sm:text-base">Trusted by enterprises worldwide</span>
               </div>
             </div>
           </motion.div>
           
           <motion.div
-            className="relative"
+            className="relative max-w-full"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 p-8 rounded-2xl backdrop-blur-sm border border-gray-700">
-              <h3 className="text-2xl font-bold mb-4 text-white font-display">Our Mission</h3>
-              <p className="text-gray-300 mb-6 font-body">
+            <div className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 p-6 sm:p-8 rounded-2xl backdrop-blur-sm border border-gray-700">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-white font-display">Our Mission</h3>
+              <p className="text-gray-300 mb-6 font-body text-sm sm:text-base leading-relaxed">
                 To empower businesses with intelligent automation solutions that enhance productivity, drive innovation, and create sustainable competitive advantages.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-emerald-400 font-display">50+</div>
-                  <div className="text-small text-gray-400">Projects Completed</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-400 font-display">50+</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Projects Completed</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-teal-400 font-display">100%</div>
-                  <div className="text-small text-gray-400">Client Satisfaction</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-teal-400 font-display">100%</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Client Satisfaction</div>
                 </div>
               </div>
             </div>
@@ -685,24 +748,24 @@ export const AboutUs = () => {
         
         {/* Team Section */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-12 max-w-full"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <p className="text-accent text-emerald-400 mb-4">OUR TEAM</p>
-          <h3 className="text-4xl font-bold mb-4 font-display">Meet Our Expert Team</h3>
-          <p className="section-subtitle text-gray-300 max-w-2xl mx-auto">
+          <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">OUR TEAM</p>
+          <h3 className="text-3xl sm:text-4xl font-bold mb-4 font-display">Meet Our Expert Team</h3>
+          <p className="section-subtitle text-gray-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             Passionate innovators dedicated to transforming your business with AI
           </p>
         </motion.div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
-              className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 p-6 rounded-xl backdrop-blur-sm border border-gray-700 hover:border-emerald-500 transition-all duration-300 group"
+              className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 p-6 rounded-xl backdrop-blur-sm border border-gray-700 hover:border-emerald-500 transition-all duration-300 group max-w-full"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -718,9 +781,9 @@ export const AboutUs = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
               </div>
-              <h4 className="text-xl font-semibold text-white mb-2 text-center font-display">{member.name}</h4>
-              <p className="text-accent text-emerald-400 text-center mb-3">{member.role}</p>
-              <p className="text-gray-300 text-center text-small">{member.bio}</p>
+              <h4 className="text-lg sm:text-xl font-semibold text-white mb-2 text-center font-display break-words">{member.name}</h4>
+              <p className="text-accent text-emerald-400 text-center mb-3 text-sm sm:text-base">{member.role}</p>
+              <p className="text-gray-300 text-center text-xs sm:text-sm leading-relaxed">{member.bio}</p>
             </motion.div>
           ))}
         </div>
@@ -830,50 +893,51 @@ export const ProjectsDone = () => {
   );
 };
 
-// Data Section Component - Updated with modern typography
+// Data Section Component - Fixed for responsive layout
 export const DataSection = () => {
   return (
-    <section className="py-20 px-6 bg-black text-white">
-      <div className="container mx-auto">
+    <section className="py-20 px-6 bg-black text-white overflow-x-hidden">
+      <div className="container mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="max-w-full"
           >
-            <p className="text-accent text-emerald-400 mb-4">DATA INTELLIGENCE</p>
+            <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">DATA INTELLIGENCE</p>
             
-            <h2 className="section-title mb-8 leading-none">
+            <h2 className="section-title mb-8 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
               Do more with
               <br />
-              <span className="gradient-text">
+              <span className="gradient-text break-words">
                 more of your data.
               </span>
             </h2>
             
-            <p className="section-subtitle text-gray-300 mb-8">
+            <p className="section-subtitle text-gray-300 mb-8 text-base sm:text-lg leading-relaxed">
               Transform raw data into actionable insights with our AI-powered analytics platform.
             </p>
             
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                <span className="text-gray-300">Real-time Data Processing</span>
+                <div className="w-2 h-2 bg-emerald-400 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-300 text-sm sm:text-base">Real-time Data Processing</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-                <span className="text-gray-300">Advanced Analytics & Insights</span>
+                <div className="w-2 h-2 bg-teal-400 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-300 text-sm sm:text-base">Advanced Analytics & Insights</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                <span className="text-gray-300">Predictive Intelligence</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-300 text-sm sm:text-base">Predictive Intelligence</span>
               </div>
             </div>
           </motion.div>
           
           <motion.div
-            className="relative"
+            className="relative max-w-full"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -883,12 +947,12 @@ export const DataSection = () => {
               <img 
                 src="https://images.unsplash.com/photo-1601132359864-c974e79890ac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85"
                 alt="AI Business Intelligence" 
-                className="w-full h-96 object-cover rounded-2xl"
+                className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl max-w-full"
               />
-              <div className="absolute top-4 left-4 bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg">
+              <div className="absolute top-4 left-4 bg-purple-600 text-white px-3 py-2 rounded-lg shadow-lg max-w-[calc(100%-2rem)]">
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                  <span className="text-small">AI analyzing customer behavior patterns</span>
+                  <div className="w-2 h-2 bg-white rounded-full flex-shrink-0"></div>
+                  <span className="text-xs sm:text-sm break-words">AI analyzing customer behavior patterns</span>
                 </div>
               </div>
             </div>
@@ -899,97 +963,98 @@ export const DataSection = () => {
   );
 };
 
-// Actions Section Component - Updated with modern typography
+// Actions Section Component - Fixed for responsive layout
 export const ActionsSection = () => {
   return (
-    <section className="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100 text-black">
-      <div className="container mx-auto">
+    <section className="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100 text-black overflow-x-hidden">
+      <div className="container mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="max-w-full"
           >
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-3 h-3 bg-emerald-600 rounded-full"></div>
               <div className="w-3 h-3 bg-teal-600 rounded-full"></div>
             </div>
             
-            <h2 className="section-title mb-6">
+            <h2 className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight break-words">
               Turn data into action.
             </h2>
             
-            <p className="section-subtitle text-gray-700 mb-8">
+            <p className="section-subtitle text-gray-700 mb-8 text-base sm:text-lg leading-relaxed">
               Transform your business with intelligent automation solutions that deliver measurable results.
             </p>
             
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-                <span className="text-gray-700">AI-Powered Business Intelligence</span>
+                <div className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-700 text-sm sm:text-base">AI-Powered Business Intelligence</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-teal-600 rounded-full"></div>
-                <span className="text-gray-700">Real-time Data Processing</span>
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-700 text-sm sm:text-base">Real-time Data Processing</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
-                <span className="text-gray-700">Automated Workflow Systems</span>
+                <div className="w-2 h-2 bg-purple-600 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-700 text-sm sm:text-base">Automated Workflow Systems</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-pink-600 rounded-full"></div>
-                <span className="text-gray-700">Advanced SEO Analytics</span>
+                <div className="w-2 h-2 bg-pink-600 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-700 text-sm sm:text-base">Advanced SEO Analytics</span>
               </div>
             </div>
           </motion.div>
           
           <motion.div
-            className="relative"
+            className="relative max-w-full"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="bg-white p-8 rounded-2xl shadow-2xl">
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl max-w-full">
               <div className="space-y-6">
                 <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-sm font-bold font-mono">AI</span>
                   </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 font-display">AI Agent Analysis</div>
-                    <div className="text-small text-gray-600">Processing customer data...</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">AI Agent Analysis</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Processing customer data...</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-sm font-bold">📊</span>
                   </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 font-display">Generate SEO insights</div>
-                    <div className="text-small text-gray-600">Optimization recommendations active</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">Generate SEO insights</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Optimization recommendations active</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-sm font-bold">🔄</span>
                   </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 font-display">Automate workflow systems</div>
-                    <div className="text-small text-gray-600">Cross-platform integration</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">Automate workflow systems</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Cross-platform integration</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-sm font-bold">📈</span>
                   </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 font-display">Deploy AI website features</div>
-                    <div className="text-small text-gray-600">Enhanced user experience</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">Deploy AI website features</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Enhanced user experience</div>
                   </div>
                 </div>
               </div>
