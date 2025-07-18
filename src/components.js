@@ -48,7 +48,7 @@ export const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <NavLink href="#home">Home</NavLink>
+            <NavLink href="#hero">Home</NavLink>
             <NavLink href="#services">Services</NavLink>
             <NavLink href="#about">About</NavLink>
             <NavLink href="#projects">Projects</NavLink>
@@ -95,7 +95,7 @@ export const Header = () => {
               transition={{ duration: 0.3 }}
             >
               <nav className="flex flex-col space-y-4 pt-4">
-                <NavLink href="#home" mobile onClose={closeMobileMenu}>Home</NavLink>
+                <NavLink href="#hero" mobile onClose={closeMobileMenu}>Home</NavLink>
                 <NavLink href="#services" mobile onClose={closeMobileMenu}>Services</NavLink>
                 <NavLink href="#about" mobile onClose={closeMobileMenu}>About</NavLink>
                 <NavLink href="#projects" mobile onClose={closeMobileMenu}>Projects</NavLink>
@@ -571,7 +571,7 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center pt-32 px-6 overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-32 px-6 overflow-hidden">
       {/* Dark Abstract Background (Ensure this image is dark and subtle) */}
       <div
         className="absolute inset-0 scale-110"
@@ -1129,7 +1129,6 @@ export const Services = () => {
 };
 
 // About Us Component - Fixed for responsive layout and modern team section
-
 export const AboutUs = () => {
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
@@ -1138,6 +1137,7 @@ export const AboutUs = () => {
   const ringsRef = useRef([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const [isClient, setIsClient] = useState(false);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
 
   const teamMembers = [
     {
@@ -1169,6 +1169,30 @@ export const AboutUs = () => {
 
   useEffect(() => {
     setIsClient(true);
+  }, []);
+
+  // Intersection Observer to detect hero section visibility
+  useEffect(() => {
+    const heroElement = document.querySelector('#hero'); // Assuming your hero has id="hero"
+    
+    if (!heroElement) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroVisible(entry.isIntersecting);
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when 10% of hero is visible
+      }
+    );
+
+    observer.observe(heroElement);
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -1227,7 +1251,7 @@ export const AboutUs = () => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      // Update rings based on mouse position
+      // Update rings based on mouse position and hero visibility
       rings.forEach((ring, index) => {
         const time = Date.now() * 0.001;
         
@@ -1247,8 +1271,15 @@ export const AboutUs = () => {
         const scale = 1 + Math.sin(time * 2 + index) * 0.3;
         ring.scale.set(scale, scale, scale);
         
-        // Opacity variation
-        ring.material.opacity = 0.2 + Math.sin(time + index) * 0.1;
+        // Opacity variation - hide when hero is visible
+        if (isHeroVisible) {
+          // Fade out rings when hero is visible
+          ring.material.opacity = Math.max(0, ring.material.opacity - 0.02);
+        } else {
+          // Fade in rings when hero is not visible
+          const targetOpacity = 0.2 + Math.sin(time + index) * 0.1;
+          ring.material.opacity = Math.min(targetOpacity, ring.material.opacity + 0.02);
+        }
       });
 
       renderer.render(scene, camera);
@@ -1276,7 +1307,7 @@ export const AboutUs = () => {
       }
       renderer.dispose();
     };
-  }, [isClient]);
+  }, [isClient, isHeroVisible]); // Add isHeroVisible to dependencies
 
   // Team card background style
   const teamCardStyle = {
@@ -1465,7 +1496,6 @@ export const AboutUs = () => {
   );
 };
 
-export default AboutUs;
 
 // Projects Done Component - Updated with modern typography
 export const ProjectsDone = () => {
