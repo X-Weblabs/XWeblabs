@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 
 export const Header = () => {
@@ -114,6 +114,7 @@ export const Header = () => {
     </motion.header>
   );
 };
+
 
 const NavLink = ({ href, children, mobile = false, onClose }) => {
   const handleClick = (e) => {
@@ -854,7 +855,7 @@ export const Services = () => {
       image:
         "/images/saas.png",
       stats: { users: "10K+", uptime: "99.9%", scale: "∞" },
-      count: "003",
+      count: "03",
     },
     {
       icon: "🔍",
@@ -1008,7 +1009,9 @@ export const Services = () => {
                             <span className="text-lg">{service.icon}</span>
                           </div>
                           <div>
-                            <h4 className="text-lg font-bold text-white">{index == 6 ? "" : service.title}</h4>
+                            <h4 className="text-lg font-bold text-white">
+                              {service.title === "Generative Engine Optimization" ? "" : service.title}
+                            </h4>
                             <div className="h-0.5 w-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full mt-1"></div>
                           </div>
                         </div>
@@ -1125,56 +1128,196 @@ export const Services = () => {
   );
 };
 
-// About Us Component - Fixed for responsive layout
+// About Us Component - Fixed for responsive layout and modern team section
+
 export const AboutUs = () => {
+  const mountRef = useRef(null);
+  const sceneRef = useRef(null);
+  const rendererRef = useRef(null);
+  const cameraRef = useRef(null);
+  const ringsRef = useRef([]);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const [isClient, setIsClient] = useState(false);
+
   const teamMembers = [
     {
       name: "Mandlenkosi Ndiweni",
       role: "CTO",
-      image: "https://images.unsplash.com/photo-1602110531833-53eab0b67456?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdHN8ZW58MHx8fGdyZWVufDE3NTI3Mzg4MDl8MA&ixlib=rb-4.1.0&q=85",
       bio: "Leading our technical vision and AI innovation strategy"
     },
     {
       name: "Mqhelisi Mzizi",
       role: "Chief Marketing Officer",
-      image: "https://images.pexels.com/photos/30535624/pexels-photo-30535624.jpeg",
       bio: "Driving growth through strategic marketing and brand development"
     },
     {
       name: "Stanlake Phiri",
       role: "Research Lead",
-      image: "https://images.unsplash.com/photo-1602110531833-53eab0b67456?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdHN8ZW58MHx8fGdyZWVufDE3NTI3Mzg4MDl8MA&ixlib=rb-4.1.0&q=85",
       bio: "Pioneering research in AI and automation technologies"
     },
     {
       name: "Pious Ncube",
       role: "Operations Manager",
-      image: "https://images.pexels.com/photos/30535624/pexels-photo-30535624.jpeg",
       bio: "Ensuring smooth operations and project delivery excellence"
+    },
+    {
+      name: "Decent Ncube",
+      role: "DevOps Engineer",
+      bio: "Managing Infrastructure and Infrastructure."
     }
   ];
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || !mountRef.current) return;
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    mountRef.current.appendChild(renderer.domElement);
+
+    sceneRef.current = scene;
+    rendererRef.current = renderer;
+    cameraRef.current = camera;
+
+    // Create rings with different colors
+    const colors = [0x3b82f6, 0x06b6d4, 0x8b5cf6]; // blue, turquoise, purple
+    const rings = [];
+
+    for (let i = 0; i < 8; i++) {
+      const geometry = new THREE.RingGeometry(0.8, 1.2, 32);
+      const material = new THREE.MeshBasicMaterial({
+        color: colors[i % colors.length],
+        transparent: true,
+        opacity: 0.3,
+        side: THREE.DoubleSide
+      });
+      
+      const ring = new THREE.Mesh(geometry, material);
+      ring.position.set(
+        (Math.random() - 0.5) * 20,
+        (Math.random() - 0.5) * 20,
+        (Math.random() - 0.5) * 10
+      );
+      ring.rotation.x = Math.random() * Math.PI;
+      ring.rotation.y = Math.random() * Math.PI;
+      ring.rotation.z = Math.random() * Math.PI;
+      
+      scene.add(ring);
+      rings.push(ring);
+    }
+
+    ringsRef.current = rings;
+    camera.position.z = 8;
+
+    // Mouse move handler
+    const handleMouseMove = (event) => {
+      mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      // Update rings based on mouse position
+      rings.forEach((ring, index) => {
+        const time = Date.now() * 0.001;
+        
+        // Smooth follow cursor movement
+        const targetX = mouseRef.current.x * 3 + Math.sin(time + index) * 2;
+        const targetY = mouseRef.current.y * 3 + Math.cos(time + index) * 2;
+        
+        ring.position.x += (targetX - ring.position.x) * 0.1;
+        ring.position.y += (targetY - ring.position.y) * 0.1;
+        
+        // Continuous rotation
+        ring.rotation.x += 0.01;
+        ring.rotation.y += 0.02;
+        ring.rotation.z += 0.005;
+        
+        // Pulsing effect
+        const scale = 1 + Math.sin(time * 2 + index) * 0.3;
+        ring.scale.set(scale, scale, scale);
+        
+        // Opacity variation
+        ring.material.opacity = 0.2 + Math.sin(time + index) * 0.1;
+      });
+
+      renderer.render(scene, camera);
+    };
+
+    // Event listeners
+    window.addEventListener('mousemove', handleMouseMove);
+    animate();
+
+    // Resize handler
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+      if (mountRef.current && renderer.domElement) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
+  }, [isClient]);
+
+  // Team card background style
+  const teamCardStyle = {
+    backgroundImage: `
+      linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+      url("/images/abstract 2.jpg")
+    `,
+    backgroundSize: 'cover, cover',
+    backgroundPosition: 'center center, center center',
+    backgroundRepeat: 'no-repeat, no-repeat',
+    transition: 'all 0.5s ease'
+  };
+
+  const teamCardHoverStyle = {
+    backgroundSize: 'cover, 110%',
+    backgroundPosition: 'center center, center center'
+  };
+
   return (
-    <section id="about" className="py-20 px-6 bg-black text-white overflow-x-hidden">
-      <div className="container mx-auto max-w-7xl">
+    <section id="about" className="py-20 px-6 bg-black text-white overflow-x-hidden relative">
+      {/* 3D Canvas Background */}
+      <div 
+        ref={mountRef} 
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}
+      />
+      
+      {/* Content with higher z-index */}
+      <div className="container mx-auto max-w-7xl relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-full"
-          >
+          <div className="max-w-full">
             <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">WHO WE ARE</p>
-            
+
             <h2 className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-              About <span className="gradient-text">X-Web Labs</span>
+              About <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">X-Web Labs</span>
             </h2>
-            
+
             <p className="section-subtitle text-gray-300 mb-6 text-base sm:text-lg leading-relaxed">
               We are a cutting-edge AI automation agency dedicated to transforming businesses through intelligent technology solutions.
             </p>
-            
+
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full flex-shrink-0"></div>
@@ -1189,15 +1332,9 @@ export const AboutUs = () => {
                 <span className="text-gray-300 text-sm sm:text-base">Trusted by enterprises worldwide</span>
               </div>
             </div>
-          </motion.div>
-          
-          <motion.div
-            className="relative max-w-full"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
+          </div>
+
+          <div className="relative max-w-full">
             <div className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 p-6 sm:p-8 rounded-2xl backdrop-blur-sm border border-gray-700">
               <h3 className="text-xl sm:text-2xl font-bold mb-4 text-white font-display">Our Mission</h3>
               <p className="text-gray-300 mb-6 font-body text-sm sm:text-base leading-relaxed">
@@ -1214,54 +1351,121 @@ export const AboutUs = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-        
+
         {/* Team Section */}
-        <motion.div
-          className="text-center mb-12 max-w-full"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className="text-center mb-12 max-w-full">
           <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">OUR TEAM</p>
           <h3 className="text-3xl sm:text-4xl font-bold mb-4 font-display">Meet Our Expert Team</h3>
           <p className="section-subtitle text-gray-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             Passionate innovators dedicated to transforming your business with AI
           </p>
-        </motion.div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {teamMembers.map((member, index) => (
-            <motion.div
+        </div>
+
+        {/* Top Row: 2 Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 mb-6">
+          {teamMembers.slice(0, 2).map((member, index) => (
+            <div
               key={index}
-              className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 p-6 rounded-xl backdrop-blur-sm border border-gray-700 hover:border-emerald-500 transition-all duration-300 group max-w-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
+              className="p-6 rounded-2xl backdrop-blur-sm border border-gray-700 hover:border-purple-500 transition-all duration-300 group flex flex-col items-center text-center relative overflow-hidden hover:shadow-2xl hover:shadow-purple-500/20"
+              style={teamCardStyle}
             >
-              <div className="relative mb-6">
-                <motion.img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-24 h-24 rounded-full mx-auto object-cover"
-                  whileHover={{ scale: 1.1 }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+              {/* Abstract Background Pattern Overlay */}
+              <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                style={{
+                  background: `
+                    repeating-linear-gradient(
+                      45deg,
+                      transparent,
+                      transparent 10px,
+                      rgba(147, 51, 234, 0.1) 10px,
+                      rgba(147, 51, 234, 0.1) 20px
+                    ),
+                    repeating-linear-gradient(
+                      -45deg,
+                      transparent,
+                      transparent 10px,
+                      rgba(20, 184, 166, 0.1) 10px,
+                      rgba(20, 184, 166, 0.1) 20px
+                    )
+                  `
+                }}
+              />
+
+              {/* Modern Placeholder for Image */}
+              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-6 overflow-hidden z-10">
+                <svg className="w-16 h-16 text-white opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM12 12.5c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5z"></path>
+                </svg>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h4 className="text-lg sm:text-xl font-semibold text-white mb-2 text-center font-display break-words">{member.name}</h4>
-              <p className="text-accent text-emerald-400 text-center mb-3 text-sm sm:text-base">{member.role}</p>
-              <p className="text-gray-300 text-center text-xs sm:text-sm leading-relaxed">{member.bio}</p>
-            </motion.div>
+
+              <h4 className="text-xl sm:text-2xl font-semibold text-white mb-2 font-display break-words z-10 relative">
+                {member.name}
+              </h4>
+              <p className="text-accent text-emerald-400 text-sm sm:text-base mb-3 z-10 relative">{member.role}</p>
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed flex-grow z-10 relative">{member.bio}</p>
+
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full group-hover:w-1/3 transition-all duration-300 z-10"></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Row: 3 Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {teamMembers.slice(2).map((member, index) => (
+            <div
+              key={index}
+              className="p-6 rounded-2xl backdrop-blur-sm border border-gray-700 hover:border-purple-500 transition-all duration-300 group flex flex-col items-center text-center relative overflow-hidden hover:shadow-2xl hover:shadow-purple-500/20"
+              style={teamCardStyle}
+            >
+              {/* Abstract Background Pattern Overlay */}
+              <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                style={{
+                  background: `
+                    repeating-linear-gradient(
+                      45deg,
+                      transparent,
+                      transparent 10px,
+                      rgba(147, 51, 234, 0.1) 10px,
+                      rgba(147, 51, 234, 0.1) 20px
+                    ),
+                    repeating-linear-gradient(
+                      -45deg,
+                      transparent,
+                      transparent 10px,
+                      rgba(20, 184, 166, 0.1) 10px,
+                      rgba(20, 184, 166, 0.1) 20px
+                    )
+                  `
+                }}
+              />
+
+              {/* Modern Placeholder for Image */}
+              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-6 overflow-hidden z-10">
+                <svg className="w-16 h-16 text-white opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM12 12.5c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5z"></path>
+                </svg>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+
+              <h4 className="text-xl sm:text-2xl font-semibold text-white mb-2 font-display break-words z-10 relative">
+                {member.name}
+              </h4>
+              <p className="text-accent text-emerald-400 text-sm sm:text-base mb-3 z-10 relative">{member.role}</p>
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed flex-grow z-10 relative">{member.bio}</p>
+
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full group-hover:w-1/3 transition-all duration-300 z-10"></div>
+            </div>
           ))}
         </div>
       </div>
     </section>
   );
 };
+
+export default AboutUs;
 
 // Projects Done Component - Updated with modern typography
 export const ProjectsDone = () => {
@@ -1544,12 +1748,13 @@ export const Footer = () => {
       <div className="container mx-auto">
         <div className="grid md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm font-mono">X</span>
-              </div>
-              <span className="text-white text-xl font-bold font-display">X-Web Labs</span>
-            </div>
+             <motion.img
+              src="/images/logo.png"
+              animate={{ x: 10, rotate: 360 }}
+              transition={{ duration: 2 }}
+              style={{}}
+              width={100}
+            />
             <p className="text-gray-400 mb-6 max-w-md font-body">
               Transforming businesses through AI automation and intelligent solutions. Your partner in digital innovation.
             </p>
