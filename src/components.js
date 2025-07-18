@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import * as THREE from 'three';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,15 +38,13 @@ export const Header = () => {
       <div className="container mx-auto px-6 py-4 max-w-full">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div 
-            className="flex items-center space-x-3"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm font-mono">X</span>
-            </div>
-            <span className="text-white text-xl font-bold font-display">X-Web Labs</span>
-          </motion.div>
+           <motion.img
+              src="/images/logo.png"
+              animate={{ x: 10, rotate: 360 }}
+              transition={{ duration: 2 }}
+              style={{}}
+              width={100}
+            />
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -169,32 +168,469 @@ const NavLink = ({ href, children, mobile = false, onClose }) => {
   );
 };
 
-// Hero Component - Updated with AI automation background and modern typography
+// Hero Component - Updated for a cleaner, professional look
 export const Hero = () => {
+  const mountRef = useRef(null);
+  const sceneRef = useRef(null);
+  const rendererRef = useRef(null);
+  const cameraRef = useRef(null);
+  const objectsRef = useRef([]);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000, 0);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    mountRef.current.appendChild(renderer.domElement);
+
+    // Store references
+    sceneRef.current = scene;
+    rendererRef.current = renderer;
+    cameraRef.current = camera;
+
+    // Camera position
+    camera.position.z = 8;
+
+    // Harmonized lighting
+    const ambientLight = new THREE.AmbientLight(0x1a1a2e, 0.4); // Slightly increased ambient light for better base visibility
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7); // Slightly reduced intensity
+    directionalLight.position.set(5, 5, 5);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+
+    // Subtler point lights, aligned with a refined palette
+    const pointLight1 = new THREE.PointLight(0x00aaff, 1.0, 50); // Clear blue
+    pointLight1.position.set(8, 8, 8);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0x8A2BE2, 0.8, 50); // Purple
+    pointLight2.position.set(-8, -8, 8);
+    scene.add(pointLight2);
+
+    const pointLight3 = new THREE.PointLight(0x40E0D0, 0.6, 50); // Turquoise
+    pointLight3.position.set(8, -8, -8);
+    scene.add(pointLight3);
+
+    // Create futuristic 3D objects with refined glass-like and glowing effects
+    const objects = [];
+
+    // 1. Glowing CPU/Chip with glass effect (Blue Focus)
+    const chipGeometry = new THREE.BoxGeometry(1.2, 1.2, 0.15);
+    const chipMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x00aaff, // Clear blue
+      emissive: 0x004488, // Deeper blue glow
+      emissiveIntensity: 0.3, // Subtler glow
+      metalness: 0.1,
+      roughness: 0.1,
+      transparent: true,
+      opacity: 0.6, // More transparent
+      transmission: 0.4,
+      thickness: 0.1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1
+    });
+    const chip = new THREE.Mesh(chipGeometry, chipMaterial);
+    chip.position.set(-6, 3, -2);
+    chip.castShadow = true;
+    scene.add(chip);
+
+    const chipWireframe = new THREE.Mesh(
+      chipGeometry,
+      new THREE.MeshBasicMaterial({
+        color: 0x00aaff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.2 // Subtler wireframe
+      })
+    );
+    chipWireframe.position.copy(chip.position);
+    chip.add(chipWireframe);
+
+    objects.push({ mesh: chip, speed: 0.01, followStrength: 0.12, basePos: { x: -6, y: 3, z: -2 }, baseOpacity: 0.6, baseEmissiveIntensity: 0.3 });
+
+    // 2. Pulsing Neural Network Node with glass sphere (Purple Focus)
+    const nodeGeometry = new THREE.SphereGeometry(0.6, 32, 32);
+    const nodeMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x8A2BE2, // Purple
+      emissive: 0x4B0082, // Deeper purple glow
+      emissiveIntensity: 0.4, // Subtler glow
+      metalness: 0.0,
+      roughness: 0.0,
+      transparent: true,
+      opacity: 0.5, // More transparent
+      transmission: 0.6,
+      thickness: 0.2,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.0,
+      ior: 1.5
+    });
+    const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
+    node.position.set(6, -2, 1);
+    node.castShadow = true;
+    scene.add(node);
+
+    const nodeCore = new THREE.Mesh(
+      new THREE.SphereGeometry(0.3, 16, 16),
+      new THREE.MeshBasicMaterial({
+        color: 0x8A2BE2,
+        transparent: true,
+        opacity: 0.7 // Slightly reduced opacity
+      })
+    );
+    node.add(nodeCore);
+
+    objects.push({ mesh: node, speed: 0.015, followStrength: 0.15, basePos: { x: 6, y: -2, z: 1 }, baseOpacity: 0.5, baseEmissiveIntensity: 0.4 });
+
+    // 3. Rotating Data Crystal with prismatic effect (Turquoise Focus)
+    const crystalGeometry = new THREE.OctahedronGeometry(0.8);
+    const crystalMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x40E0D0, // Turquoise
+      emissive: 0x207068, // Subtle turquoise glow
+      emissiveIntensity: 0.2, // Very subtle glow
+      metalness: 0.0,
+      roughness: 0.0,
+      transparent: true,
+      opacity: 0.4, // More transparent
+      transmission: 0.8, // High transmission for clear glass
+      thickness: 0.3,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.0,
+      ior: 2.4,
+      dispersion: 0.1
+    });
+    const crystal = new THREE.Mesh(crystalGeometry, crystalMaterial);
+    crystal.position.set(-2, 5, -3);
+    crystal.castShadow = true;
+    scene.add(crystal);
+
+    const crystalEdges = new THREE.EdgesGeometry(crystalGeometry);
+    const crystalLines = new THREE.LineSegments(
+      crystalEdges,
+      new THREE.LineBasicMaterial({
+        color: 0x40E0D0,
+        transparent: true,
+        opacity: 0.5 // Subtler edges
+      })
+    );
+    crystal.add(crystalLines);
+
+    objects.push({ mesh: crystal, speed: 0.02, followStrength: 0.18, basePos: { x: -2, y: 5, z: -3 }, baseOpacity: 0.4, baseEmissiveIntensity: 0.2 });
+
+    // 4. Circuit Board Plane with holographic effect (Subtle Blue)
+    const circuitGeometry = new THREE.PlaneGeometry(2, 2);
+    const circuitMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x6495ED, // Cornflower Blue
+      emissive: 0x324A76, // Subtle glow
+      emissiveIntensity: 0.1, // Minimal self-emission
+      metalness: 0.2,
+      roughness: 0.3,
+      transparent: true,
+      opacity: 0.3, // Highly transparent
+      transmission: 0.5,
+      thickness: 0.1,
+      clearcoat: 0.8,
+      clearcoatRoughness: 0.2,
+      side: THREE.DoubleSide
+    });
+    const circuit = new THREE.Mesh(circuitGeometry, circuitMaterial);
+    circuit.position.set(-5, -3, 2);
+    circuit.castShadow = true;
+    scene.add(circuit);
+
+    objects.push({ mesh: circuit, speed: 0.008, followStrength: 0.1, basePos: { x: -5, y: -3, z: 2 }, baseOpacity: 0.3, baseEmissiveIntensity: 0.1 });
+
+    // 5. AI Brain Torus with inner glow (Subdued Purple)
+    const brainGeometry = new THREE.TorusGeometry(0.8, 0.3, 16, 32);
+    const brainMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x9370DB, // Medium Purple
+      emissive: 0x4A386D, // Deeper purple glow
+      emissiveIntensity: 0.3, // Subtler glow
+      metalness: 0.1,
+      roughness: 0.2,
+      transparent: true,
+      opacity: 0.6, // More transparent
+      transmission: 0.3,
+      thickness: 0.2,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1
+    });
+    const brain = new THREE.Mesh(brainGeometry, brainMaterial);
+    brain.position.set(5, 2, -1);
+    brain.castShadow = true;
+    scene.add(brain);
+
+    const brainGlow = new THREE.Mesh(
+      new THREE.TorusGeometry(0.6, 0.2, 8, 16),
+      new THREE.MeshBasicMaterial({
+        color: 0x9370DB,
+        transparent: true,
+        opacity: 0.3 // Subtler inner glow
+      })
+    );
+    brain.add(brainGlow);
+
+    objects.push({ mesh: brain, speed: 0.012, followStrength: 0.14, basePos: { x: 5, y: 2, z: -1 }, baseOpacity: 0.6, baseEmissiveIntensity: 0.3 });
+
+    // 6. Quantum Cube with holographic shimmer (Subtle Turquoise)
+    const quantumGeometry = new THREE.BoxGeometry(0.7, 0.7, 0.7);
+    const quantumMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x7FFFD4, // Aquamarine
+      emissive: 0x3F7F6A, // Deeper turquoise glow
+      emissiveIntensity: 0.4, // Subtler glow
+      metalness: 0.0,
+      roughness: 0.0,
+      transparent: true,
+      opacity: 0.4, // More transparent
+      transmission: 0.6,
+      thickness: 0.2,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.0,
+      ior: 1.8
+    });
+    const quantum = new THREE.Mesh(quantumGeometry, quantumMaterial);
+    quantum.position.set(1, 1, 3);
+    quantum.castShadow = true;
+    scene.add(quantum);
+
+    const quantumWireframe = new THREE.Mesh(
+      quantumGeometry,
+      new THREE.MeshBasicMaterial({
+        color: 0x7FFFD4,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.3 // Subtler wireframe
+      })
+    );
+    quantum.add(quantumWireframe);
+
+    objects.push({ mesh: quantum, speed: 0.018, followStrength: 0.16, basePos: { x: 1, y: 1, z: 3 }, baseOpacity: 0.4, baseEmissiveIntensity: 0.4 });
+
+    // 7. Glass Dodecahedron with prismatic edges (Subtle Purple)
+    const dodecaGeometry = new THREE.DodecahedronGeometry(0.9);
+    const dodecaMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xBA55D3, // Medium Orchid
+      emissive: 0x5D2B6B, // Deeper purple glow
+      emissiveIntensity: 0.3, // Subtler glow
+      metalness: 0.0,
+      roughness: 0.0,
+      transparent: true,
+      opacity: 0.5, // More transparent
+      transmission: 0.5,
+      thickness: 0.3,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.0,
+      ior: 2.0
+    });
+    const dodeca = new THREE.Mesh(dodecaGeometry, dodecaMaterial);
+    dodeca.position.set(4, -4, 0);
+    dodeca.castShadow = true;
+    scene.add(dodeca);
+
+    const dodecaEdges = new THREE.EdgesGeometry(dodecaGeometry);
+    const dodecaLines = new THREE.LineSegments(
+      dodecaEdges,
+      new THREE.LineBasicMaterial({
+        color: 0xBA55D3,
+        transparent: true,
+        opacity: 0.6 // Subtler edges
+      })
+    );
+    dodeca.add(dodecaLines);
+
+    objects.push({ mesh: dodeca, speed: 0.025, followStrength: 0.13, basePos: { x: 4, y: -4, z: 0 }, baseOpacity: 0.5, baseEmissiveIntensity: 0.3 });
+
+    objectsRef.current = objects;
+
+    // Mouse move handler
+    const handleMouseMove = (event) => {
+      mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    // Resize handler
+    const handleResize = () => {
+      if (!camera || !renderer) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    // Animation loop with enhanced interactivity and subtle effects
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      const time = Date.now() * 0.001;
+      const mouse = mouseRef.current;
+
+      objectsRef.current.forEach((obj, index) => {
+        const { mesh, speed, followStrength, basePos, baseOpacity, baseEmissiveIntensity } = obj;
+
+        // Subtle floating animation
+        const floatY = Math.sin(time * speed * 2 + index * 0.5) * 0.2; // Reduced float
+        const floatX = Math.cos(time * speed * 1.5 + index * 0.3) * 0.15; // Reduced float
+
+        // Fast cursor following (Spline-style)
+        const mouseInfluence = 5; // Moderate influence range
+        const targetX = basePos.x + (mouse.x * mouseInfluence) * followStrength;
+        const targetY = basePos.y + (mouse.y * mouseInfluence) * followStrength;
+        const targetZ = basePos.z + (mouse.x * mouseInfluence * 0.5) * followStrength;
+
+        // Smooth interpolation with faster response
+        const lerpSpeed = 0.08;
+        mesh.position.x += (targetX + floatX - mesh.position.x) * lerpSpeed;
+        mesh.position.y += (targetY + floatY - mesh.position.y) * lerpSpeed;
+        mesh.position.z += (targetZ - mesh.position.z) * lerpSpeed;
+
+        // Enhanced rotation with mouse influence
+        mesh.rotation.x += speed * 0.8 + mouse.y * 0.008; // Subtler mouse rotation
+        mesh.rotation.y += speed * 0.6 + mouse.x * 0.008; // Subtler mouse rotation
+        mesh.rotation.z += speed * 0.4;
+
+        // Pulsing effect based on mouse proximity (more subtle)
+        const distance = Math.sqrt(
+          Math.pow(mouse.x * 5, 2) + Math.pow(mouse.y * 5, 2)
+        );
+        const scale = 1 + (1 - Math.min(distance / 5, 1)) * 0.1; // Reduced pulse intensity
+        mesh.scale.setScalar(scale);
+
+        // Dynamic opacity and glow based on mouse distance (more subtle)
+        if (mesh.material.opacity !== undefined) {
+          const targetOpacity = baseOpacity + (1 - Math.min(distance / 3, 1)) * 0.1; // Reduced change
+          mesh.material.opacity = Math.min(1.0, Math.max(0.2, targetOpacity)); // Clamp values
+        }
+
+        if (mesh.material.emissiveIntensity !== undefined) {
+          const glowIntensity = baseEmissiveIntensity + (1 - Math.min(distance / 4, 1)) * 0.4; // Reduced change
+          mesh.material.emissiveIntensity = Math.min(1.0, Math.max(0.0, glowIntensity)); // Clamp values
+        }
+
+        // Animate transmission for glass effect
+        if (mesh.material.transmission !== undefined) {
+          const baseTransmission = obj.transmission || mesh.material.transmission; // Store initial
+          const targetTransmission = baseTransmission + Math.sin(time * 2 + index) * 0.05; // Smaller flicker
+          mesh.material.transmission = Math.max(0.2, targetTransmission);
+        }
+
+        // Animate clearcoat for dynamic reflections
+        if (mesh.material.clearcoat !== undefined) {
+          const baseClearcoat = obj.clearcoat || mesh.material.clearcoat; // Store initial
+          const targetClearcoat = baseClearcoat + Math.sin(time * 1.5 + index) * 0.1; // Smaller flicker
+          mesh.material.clearcoat = Math.max(0.5, targetClearcoat);
+        }
+      });
+
+      // Dynamic camera movement
+      camera.position.x += (mouse.x * 0.3 - camera.position.x) * 0.02; // Slightly reduced camera movement
+      camera.position.y += (mouse.y * 0.3 - camera.position.y) * 0.02;
+      camera.lookAt(0, 0, 0);
+
+      // Render
+      renderer.render(scene, camera);
+    };
+
+    // Event listeners
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('resize', handleResize);
+
+    // Start animation
+    animate();
+    setIsLoaded(true);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+
+      if (mountRef.current && renderer.domElement) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
+
+      // Dispose of Three.js objects
+      objectsRef.current.forEach(obj => {
+        if (obj.mesh.geometry) obj.mesh.geometry.dispose();
+        if (obj.mesh.material) obj.mesh.material.dispose();
+      });
+
+      if (renderer) {
+        renderer.dispose();
+      }
+    };
+  }, []);
+
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center pt-32 px-6 overflow-hidden">
-      {/* AI Automation Background Image */}
-      <div 
+      {/* Dark Abstract Background (Ensure this image is dark and subtle) */}
+      <div
         className="absolute inset-0 scale-110"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1660165458059-57cfb6cc87e5?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85")',
-          backgroundSize: 'cover',
+          backgroundImage: 'url("/images/abstract-digital.jpg")', // Ensure this image is dark and abstract
+          backgroundSize: 'cover', // Use cover for better responsiveness
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          filter: 'brightness(0.7) contrast(1.1)' // Slightly darken and add contrast if image is too bright
         }}
       />
-      
+
       {/* Modern Gradient Overlay */}
-      <div className="absolute inset-0 hero-gradient-overlay" />
-      
-      {/* Floating Elements */}
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/20 to-black/80" />  */}
+
+      {/* Animated Grid Pattern */}
+      <div
+        className="absolute inset-0 opacity-10" // Reduced opacity for subtlety
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+          `, // Subtler grid lines
+          backgroundSize: '60px 60px', // Slightly larger grid for less density
+          animation: 'grid-move 25s linear infinite' // Slower animation
+        }}
+      />
+
+      {/* Three.js 3D Scene */}
+      <div
+        ref={mountRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: 'opacity 1.5s ease-in-out'
+        }}
+      />
+
+      {/* Enhanced Floating Elements (Smaller, Subtler, Aligned Colors) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full opacity-60"
+          className="absolute top-1/4 left-1/4 w-2 h-2 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"
           animate={{
-            y: [0, -30, 0],
+            y: [0, -25, 0], // Reduced movement
             x: [0, 20, 0],
-            opacity: [0.6, 1, 0.6]
+            scale: [1, 1.3, 1],
+            opacity: [0.4, 0.8, 0.4] // Reduced opacity
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+        <motion.div
+          className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full"
+          animate={{
+            y: [0, -18, 0],
+            x: [0, -15, 0],
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 0.8, 0.5]
           }}
           transition={{
             duration: 4,
@@ -203,51 +639,39 @@ export const Hero = () => {
           }}
         />
         <motion.div
-          className="absolute top-1/3 right-1/3 w-1 h-1 bg-teal-400 rounded-full opacity-80"
+          className="absolute bottom-1/4 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full" // Maintained a subtle warm tone
           animate={{
-            y: [0, -20, 0],
-            x: [0, -15, 0],
-            opacity: [0.8, 1, 0.8]
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-3 h-3 bg-purple-400 rounded-full opacity-40"
-          animate={{
-            y: [0, 25, 0],
+            y: [0, 30, 0],
             x: [0, -10, 0],
-            opacity: [0.4, 0.8, 0.4]
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.7, 0.3]
           }}
           transition={{
-            duration: 5,
+            duration: 6,
             repeat: Infinity,
             repeatType: "reverse"
           }}
         />
       </div>
-      
+
       <div className="container mx-auto text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-6xl mx-auto"
+          className="max-w-5xl mx-auto"
         >
-          {/* Small accent text */}
+          {/* Small accent text - more subtle */}
           <motion.p
-            className="text-accent text-emerald-400 mb-4 opacity-90 text-sm sm:text-base"
+            className="text-emerald-400 mb-4 opacity-60 text-sm sm:text-base font-medium tracking-wide uppercase" // Reduced opacity, uppercase for professional feel
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
             NEXT-GENERATION AI SOLUTIONS
           </motion.p>
-          
-          {/* Responsive hero title with mobile-first approach */}
+
+          {/* Responsive hero title with enhanced gradient and refined text */}
           <motion.h1
             className="hero-text text-white mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -260,39 +684,39 @@ export const Hero = () => {
               AI Automation
             </span>
           </motion.h1>
-          
-          {/* Responsive subtitle */}
+
+          {/* Responsive subtitle - more concise */}
           <motion.p
-            className="hero-subtitle text-gray-200 mb-8 max-w-4xl mx-auto opacity-90 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed px-4"
+            className="hero-subtitle text-gray-300 mb-8 max-w-3xl mx-auto opacity-80 text-base sm:text-lg md:text-xl leading-relaxed px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            We create intelligent AI agents, cutting-edge websites, and automation systems that transform how businesses operate in the digital age.
+            Crafting intelligent AI solutions and cutting-edge digital experiences for a smarter, more efficient future.
           </motion.p>
-          
-          {/* Stats row with responsive layout */}
+
+          {/* Enhanced stats row - kept as is, it's already clean and well-structured */}
           <motion.div
             className="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mb-8 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <div className="text-center">
+            <div className="text-center backdrop-blur-sm bg-white/5 rounded-xl p-4 border border-white/10">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">50+</div>
               <div className="text-xs sm:text-sm text-gray-400">Projects Delivered</div>
             </div>
-            <div className="text-center">
+            <div className="text-center backdrop-blur-sm bg-white/5 rounded-xl p-4 border border-white/10">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">100%</div>
               <div className="text-xs sm:text-sm text-gray-400">Client Satisfaction</div>
             </div>
-            <div className="text-center">
+            <div className="text-center backdrop-blur-sm bg-white/5 rounded-xl p-4 border border-white/10">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">24/7</div>
               <div className="text-xs sm:text-sm text-gray-400">AI Support</div>
             </div>
           </motion.div>
-          
-          {/* Responsive CTA Buttons */}
+
+          {/* Enhanced CTA Buttons - kept as is, they look great */}
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4"
             initial={{ opacity: 0, y: 20 }}
@@ -300,33 +724,32 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <motion.button
-              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:shadow-xl transition-all duration-300 tracking-wide"
-              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.3)" }}
+              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:shadow-xl transition-all duration-300 tracking-wide backdrop-blur-sm"
+              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.4)" }}
               whileTap={{ scale: 0.95 }}
             >
               Explore Our Services
             </motion.button>
-            
+
             <motion.button
-              className="w-full sm:w-auto border-2 border-white/80 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm"
+              className="w-full sm:w-auto border-2 border-white/60 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               View Projects
             </motion.button>
           </motion.div>
-          
-          {/* Small bottom text */}
-          <motion.p
-            className="text-xs sm:text-sm text-gray-400 mt-6 mb-5 sm:mt-8 opacity-70 px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            Trusted by leading enterprises worldwide
-          </motion.p>
+
+          {/* Removed the 'Trusted by...' line for cleaner hero section */}
         </motion.div>
       </div>
+
+      <style jsx>{`
+        @keyframes grid-move {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(60px, 60px); } /* Matches new background-size */
+        }
+      `}</style>
     </section>
   );
 };
@@ -334,7 +757,7 @@ export const Hero = () => {
 // Client Logos Component
 export const ClientLogos = () => {
   const logos = [
-    "Python", "React", "Javascript", "NodeJs", "Langflow", "n8n", "Make", "SQL", "Tensorflow" 
+    "Python", "React", "Javascript", "NodeJs", "Langchain", "Langflow", "Langsmith", "n8n", "Make", "SQL", "Tensorflow" 
   ];
 
   return (
@@ -515,15 +938,15 @@ export const Services = () => {
       </div>
 
       {/* Services Content - Separate container */}
-      <div className="relative min-h-screen">
+      <div className="relative">
         <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             {/* Left Side - Scrolling Text Content */}
-            <div className="space-y-32">
+            <div className="space-y-8 lg:space-y-32">
               {services.map((service, index) => (
                 <motion.div
                   key={index}
-                  className="space-y-8 min-h-screen flex flex-col justify-center"
+                  className="space-y-6 lg:space-y-8 py-8 lg:py-16 lg:min-h-screen lg:flex lg:flex-col lg:justify-center"
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-30%" }}
@@ -548,6 +971,33 @@ export const Services = () => {
                     </div>
                   </motion.div>
 
+                  {/* Mobile Image - Show on small screens */}
+                  <div className="lg:hidden mb-6">
+                    <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                      <img
+                        src={service.image || "/placeholder.svg"}
+                        alt={service.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      
+                      {/* Mobile Overlay Content */}
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <div className="flex items-center">
+                          <div
+                            className={`w-10 h-10 bg-gradient-to-r ${service.gradient} rounded-lg flex items-center justify-center mr-3`}
+                          >
+                            <span className="text-lg">{service.icon}</span>
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-bold text-white">{service.title}</h4>
+                            <div className="h-0.5 w-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full mt-1"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Service Title */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -555,7 +1005,7 @@ export const Services = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <h3 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                    <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 leading-tight">
                       {service.title.split(" ").map((word, idx) => (
                         <span key={idx} className={idx === service.title.split(" ").length - 1 ? "block" : ""}>
                           {word}
@@ -563,12 +1013,12 @@ export const Services = () => {
                         </span>
                       ))}
                     </h3>
-                    <div className="h-1 w-20 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full mb-8"></div>
+                    <div className="h-1 w-20 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full mb-6 lg:mb-8"></div>
                   </motion.div>
 
                   {/* Service Description */}
                   <motion.p
-                    className="text-xl text-gray-700 leading-relaxed mb-8 max-w-lg"
+                    className="text-lg lg:text-xl text-gray-700 leading-relaxed mb-6 lg:mb-8 max-w-lg"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -579,7 +1029,7 @@ export const Services = () => {
 
                   {/* Features List */}
                   <motion.div
-                    className="space-y-4"
+                    className="space-y-3 lg:space-y-4"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -595,7 +1045,7 @@ export const Services = () => {
                         transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
                       >
                         <div className="w-2 h-2 bg-cyan-600 rounded-full mr-4 flex-shrink-0"></div>
-                        <span className="text-lg">{feature}</span>
+                        <span className="text-base lg:text-lg">{feature}</span>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -603,17 +1053,17 @@ export const Services = () => {
               ))}
             </div>
 
-            {/* Right Side - Sticky Image Container with top offset */}
-            <div className="sticky top-24 h-[calc(100vh-6rem)] flex items-center justify-center">
+            {/* Right Side - Sticky Image Container (Desktop Only) */}
+            <div className="hidden lg:block sticky top-24 h-[calc(100vh-6rem)] flex items-center justify-center">
               <div className="relative w-full max-w-2xl">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`image-${activeService}`}
                     className="relative"
-                    initial={{ opacity: 0, scale: 0.9, rotateY: 90 }}
-                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, rotateY: -90 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.7, ease: "easeInOut" }}
                   >
                     {/* Main Image Container */}
                     <div className="relative rounded-3xl overflow-hidden shadow-2xl">
@@ -649,6 +1099,9 @@ export const Services = () => {
             </div>
           </div>
         </div>
+
+        {/* Bottom spacing */}
+        <div className="pb-20"></div>
       </div>
     </section>
   );
@@ -1087,10 +1540,7 @@ export const Footer = () => {
                 <span className="text-emerald-400 font-mono">EMAIL:</span> xweblabs@gmail.com
               </p>
               <p className="text-gray-400">
-                <span className="text-emerald-400 font-mono">PHONE:</span> +26377735003
-              </p>
-              <p className="text-gray-400">
-                <span className="text-emerald-400 font-mono">PHONE:</span> +263785401678
+                <span className="text-emerald-400 font-mono">PHONE:</span> +61 450 803 578 | +263 777 350 003 | +263 785 401 678
               </p>
             </div>
           </div>
