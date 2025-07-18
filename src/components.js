@@ -757,11 +757,14 @@ export const Hero = () => {
 // Client Logos Component
 export const ClientLogos = () => {
   const logos = [
-    "Python", "React", "Javascript", "NodeJs", "Langchain", "Langflow", "Langsmith", "n8n", "Make", "SQL", "Tensorflow" 
+    "Python", "React", "Javascript", "NodeJs", "Langchain", "Langflow", "Langsmith", "n8n", "Make", "SQL", "Tensorflow"
   ];
 
+  // Duplicate the logos to create a seamless loop
+  const duplicatedLogos = [...logos, ...logos, ...logos, ...logos]; // Duplicate 4 times for a smooth, continuous effect
+
   return (
-    <section className="py-16 px-6 bg-black border-b border-gray-800">
+    <section className="py-16 px-6 bg-black border-b border-gray-800 overflow-hidden"> {/* Added overflow-hidden */}
       <div className="container mx-auto">
         <motion.p
           className="text-accent text-center text-gray-500 mb-8"
@@ -772,21 +775,36 @@ export const ClientLogos = () => {
         >
           OUR TECHNOLOGIES & TOOLS
         </motion.p>
-        
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60">
-          {logos.map((logo, index) => (
-            <motion.div
-              key={index}
-              className="text-white text-lg font-medium font-display"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 0.6, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.1, opacity: 1 }}
-            >
-              {logo}
-            </motion.div>
-          ))}
+
+        <div className="relative w-full overflow-hidden">
+          <motion.div
+            className="flex flex-nowrap items-center gap-8 md:gap-12 opacity-60"
+            animate={{
+              x: ['0%', '-25%'] // Adjust -25% based on how many times you duplicated (100% / number of duplicates)
+            }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 10, // Increase duration for slower scroll
+                ease: "linear",
+              },
+            }}
+          >
+            {duplicatedLogos.map((logo, index) => (
+              <motion.div
+                key={index}
+                className="text-white text-lg font-medium font-display flex-shrink-0" // Added flex-shrink-0
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 0.6, scale: 1 }}
+                viewport={{ once: true, amount: 0.5 }} // Adjust amount for visibility trigger
+                transition={{ duration: 0.5, delay: (index % logos.length) * 0.05 }} // Use modulo for delay to keep it consistent for original set
+                whileHover={{ scale: 1.1, opacity: 1 }}
+              >
+                {logo}
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
@@ -990,7 +1008,7 @@ export const Services = () => {
                             <span className="text-lg">{service.icon}</span>
                           </div>
                           <div>
-                            <h4 className="text-lg font-bold text-white">{service.title}</h4>
+                            <h4 className="text-lg font-bold text-white">{index == 6 ? "" : service.title}</h4>
                             <div className="h-0.5 w-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full mt-1"></div>
                           </div>
                         </div>
