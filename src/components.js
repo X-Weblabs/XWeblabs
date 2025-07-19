@@ -1,6 +1,7 @@
 import React, {useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
+import { Mail, Phone } from 'lucide-react';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -827,6 +828,7 @@ export const Services = () => {
         "Machine Learning Models",
         "Automated Decision Making",
         "Real-time Analytics",
+        "Chatbots(WhatsApp, Web etc)"
       ],
       gradient: "from-emerald-500 to-teal-600",
       image:
@@ -1342,7 +1344,7 @@ export const AboutUs = () => {
             <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">WHO WE ARE</p>
 
             <h2 className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-              About <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">X-Web Labs</span>
+              About <span className="gradient-text">X-Web Labs</span>
             </h2>
 
             <p className="section-subtitle text-gray-300 mb-6 text-base sm:text-lg leading-relaxed">
@@ -1496,107 +1498,106 @@ export const AboutUs = () => {
   );
 };
 
-
 // Projects Done Component - Updated with modern typography
-export const ProjectsDone = () => {
-  const projects = [
-    {
-      title: "E-commerce AI Assistant",
-      category: "AI Agent",
-      description: "Intelligent chatbot that increased customer engagement by 300% for a major retailer",
-      image: "https://images.unsplash.com/photo-1655393001768-d946c97d6fd1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85",
-      technologies: ["Natural Language Processing", "Machine Learning", "API Integration"]
-    },
-    {
-      title: "Healthcare Management Platform",
-      category: "AI Website",
-      description: "Comprehensive healthcare platform with AI-powered patient management and analytics",
-      image: "https://images.pexels.com/photos/16053029/pexels-photo-16053029.jpeg",
-      technologies: ["React", "AI Analytics", "Data Visualization", "Cloud Computing"]
-    },
-    {
-      title: "Financial Services SEO Campaign",
-      category: "SEO Optimization",
-      description: "Achieved 400% increase in organic traffic for a fintech startup through AI-driven SEO",
-      image: "https://images.unsplash.com/photo-1601132359864-c974e79890ac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85",
-      technologies: ["AI Content Generation", "Technical SEO", "Analytics", "Performance Optimization"]
-    },
-    {
-      title: "Manufacturing Automation System",
-      category: "Automation",
-      description: "Automated production line monitoring system that reduced downtime by 60%",
-      image: "https://images.unsplash.com/photo-1700498466261-824cbd01974e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwyfHxkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwwfHx8Ymx1ZXwxNzUyNzQwNjYyfDA&ixlib=rb-4.1.0&q=85",
-      technologies: ["IoT Integration", "Real-time Monitoring", "Predictive Analytics", "Workflow Automation"]
-    }
-  ];
+// export const ProjectsDone = () => {
+//   const projects = [
+//     {
+//       title: "E-commerce AI Assistant",
+//       category: "AI Agent",
+//       description: "Intelligent chatbot that increased customer engagement by 300% for a major retailer",
+//       image: "https://images.unsplash.com/photo-1655393001768-d946c97d6fd1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85",
+//       technologies: ["Natural Language Processing", "Machine Learning", "API Integration"]
+//     },
+//     {
+//       title: "Healthcare Management Platform",
+//       category: "AI Website",
+//       description: "Comprehensive healthcare platform with AI-powered patient management and analytics",
+//       image: "https://images.pexels.com/photos/16053029/pexels-photo-16053029.jpeg",
+//       technologies: ["React", "AI Analytics", "Data Visualization", "Cloud Computing"]
+//     },
+//     {
+//       title: "Financial Services SEO Campaign",
+//       category: "SEO Optimization",
+//       description: "Achieved 400% increase in organic traffic for a fintech startup through AI-driven SEO",
+//       image: "https://images.unsplash.com/photo-1601132359864-c974e79890ac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85",
+//       technologies: ["AI Content Generation", "Technical SEO", "Analytics", "Performance Optimization"]
+//     },
+//     {
+//       title: "Manufacturing Automation System",
+//       category: "Automation",
+//       description: "Automated production line monitoring system that reduced downtime by 60%",
+//       image: "https://images.unsplash.com/photo-1700498466261-824cbd01974e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwyfHxkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwwfHx8Ymx1ZXwxNzUyNzQwNjYyfDA&ixlib=rb-4.1.0&q=85",
+//       technologies: ["IoT Integration", "Real-time Monitoring", "Predictive Analytics", "Workflow Automation"]
+//     }
+//   ];
 
-  return (
-    <section id="projects" className="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100 text-black">
-      <div className="container mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <p className="text-accent text-gray-600 mb-4">OUR WORK</p>
-          <h2 className="section-title mb-6">
-            Recent <span className="gradient-text">Projects</span>
-          </h2>
-          <p className="section-subtitle text-gray-700 max-w-2xl mx-auto">
-            Explore our successful implementations and see how we've helped businesses transform with AI
-          </p>
-        </motion.div>
+//   return (
+//     <section id="projects" className="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100 text-black">
+//       <div className="container mx-auto">
+//         <motion.div
+//           className="text-center mb-16"
+//           initial={{ opacity: 0, y: 30 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           viewport={{ once: true }}
+//           transition={{ duration: 0.8 }}
+//         >
+//           <p className="text-accent text-gray-600 mb-4">OUR WORK</p>
+//           <h2 className="section-title mb-6">
+//             Recent <span className="gradient-text">Projects</span>
+//           </h2>
+//           <p className="section-subtitle text-gray-700 max-w-2xl mx-auto">
+//             Explore our successful implementations and see how we've helped businesses transform with AI
+//           </p>
+//         </motion.div>
         
-        <div className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:shadow-3xl transition-all duration-300"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1 rounded-full text-accent font-semibold">
-                  {project.category}
-                </div>
-              </div>
+//         <div className="grid md:grid-cols-2 gap-8">
+//           {projects.map((project, index) => (
+//             <motion.div
+//               key={index}
+//               className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:shadow-3xl transition-all duration-300"
+//               initial={{ opacity: 0, y: 30 }}
+//               whileInView={{ opacity: 1, y: 0 }}
+//               viewport={{ once: true }}
+//               transition={{ duration: 0.5, delay: index * 0.1 }}
+//               whileHover={{ y: -5 }}
+//             >
+//               <div className="relative h-64 overflow-hidden">
+//                 <img 
+//                   src={project.image}
+//                   alt={project.title}
+//                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+//                 />
+//                 <div className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1 rounded-full text-accent font-semibold">
+//                   {project.category}
+//                 </div>
+//               </div>
               
-              <div className="p-8">
-                <h3 className="text-2xl font-bold mb-4 font-display">{project.title}</h3>
-                <p className="text-gray-600 mb-6 font-body">{project.description}</p>
+//               <div className="p-8">
+//                 <h3 className="text-2xl font-bold mb-4 font-display">{project.title}</h3>
+//                 <p className="text-gray-600 mb-6 font-body">{project.description}</p>
                 
-                <div className="mb-6">
-                  <h4 className="text-small font-semibold text-gray-800 mb-2 font-mono">TECHNOLOGIES USED:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, idx) => (
-                      <span key={idx} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-small">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+//                 <div className="mb-6">
+//                   <h4 className="text-small font-semibold text-gray-800 mb-2 font-mono">TECHNOLOGIES USED:</h4>
+//                   <div className="flex flex-wrap gap-2">
+//                     {project.technologies.map((tech, idx) => (
+//                       <span key={idx} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-small">
+//                         {tech}
+//                       </span>
+//                     ))}
+//                   </div>
+//                 </div>
                 
-                <button className="text-purple-600 font-semibold hover:text-purple-800 transition-colors duration-200 font-display">
-                  View Details →
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+//                 <button className="text-purple-600 font-semibold hover:text-purple-800 transition-colors duration-200 font-display">
+//                   View Details →
+//                 </button>
+//               </div>
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
 
 // Data Section Component - Fixed for responsive layout
 export const DataSection = () => {
@@ -1773,54 +1774,269 @@ export const ActionsSection = () => {
 
 // Footer Component - Updated with modern typography
 export const Footer = () => {
+  const [formData, setFormData] = useState({
+    companyName: '',
+    email: '',
+    industryType: '',
+    projectType: '',
+    projectDetails: ''
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  const services = [
+    'AI Agents',
+    'AI Websites', 
+    'SaaS',
+    'SEO Services',
+    'Generative Engine Optimization',
+    'Automation Systems'
+  ];
+
+  const industries = [
+    'Technology',
+    'Healthcare',
+    'Finance & Banking',
+    'E-commerce & Retail',
+    'Real Estate',
+    'Education',
+    'Manufacturing',
+    'Legal Services',
+    'Marketing & Advertising',
+    'Hospitality & Tourism',
+    'Transportation & Logistics',
+    'Food & Beverage',
+    'Construction',
+    'Non-profit',
+    'Consulting',
+    'Other'
+  ];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      setSubmitMessage('Thank you! We\'ll get back to you soon.');
+      setIsSubmitting(false);
+      setFormData({
+        companyName: '',
+        email: '',
+        industryType: '',
+        projectType: '',
+        projectDetails: ''
+      });
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setSubmitMessage(''), 3000);
+    }, 1000);
+  };
+
   return (
     <footer className="bg-black text-white py-12 px-6" id="contact">
       <div className="container mx-auto">
-        <div className="grid md:grid-cols-4 gap-8">
-          <div className="md:col-span-2">
-             <motion.img
-              src="/images/logo.png"
-              animate={{ x: 10, rotate: 360 }}
-              transition={{ duration: 2 }}
-              style={{}}
-              width={100}
-            />
-            <p className="text-gray-400 mb-6 max-w-md font-body">
-              Transforming businesses through AI automation and intelligent solutions. Your partner in digital innovation.
+        <div className="grid lg:grid-cols-2 gap-12 mb-12">
+          {/* Contact Form Section */}
+          <div>
+            <h2 className="text-3xl font-bold mb-6 font-display text-emerald-400 font-mono">Get In Touch</h2>
+            <p className="text-gray-400 mb-8 font-body">
+              Ready to transform your business with AI? Tell us about your project and let's create something amazing together.
             </p>
-            <div className="space-y-2">
-              <p className="text-gray-400">
-                <span className="text-emerald-400 font-mono">EMAIL:</span> xweblabs@gmail.com
-              </p>
-              <p className="text-gray-400">
-                <span className="text-emerald-400 font-mono">PHONE:</span> +61 450 803 578 | +263 777 350 003 | +263 785 401 678
-              </p>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Business/Company Name *
+                </label>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all"
+                  placeholder="Your business or company name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Industry Type *
+                </label>
+                <select
+                  name="industryType"
+                  value={formData.industryType}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-gray-900 border font-mono border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white transition-all"
+                >
+                  <option value="">Select your industry...</option>
+                  {industries.map((industry, index) => (
+                    <option key={index} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Project Type *
+                </label>
+                <select
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white transition-all"
+                >
+                  <option value="">Select a service...</option>
+                  {services.map((service, index) => (
+                    <option key={index} value={service}>
+                      {service}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Project Details *
+                </label>
+                <textarea
+                  name="projectDetails"
+                  value={formData.projectDetails}
+                  onChange={handleInputChange}
+                  rows={5}
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all resize-vertical"
+                  placeholder="Tell us about your project requirements, goals, and any specific details..."
+                />
+              </div>
+
+              <button
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="w-full bg-emerald-500 font-mono hover:bg-emerald-600 text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+
+              {submitMessage && (
+                <div className="text-emerald-400 font-mono text-center font-medium bg-emerald-900/20 border border-emerald-500/30 rounded-lg py-3">
+                  {submitMessage}
+                </div>
+              )}
             </div>
           </div>
-          
+
+          {/* Company Info Section */}
           <div>
-            <h3 className="text-white font-semibold mb-4 font-display">Services</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">AI Agents</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">AI Websites</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">SEO Services</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Automation Systems</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-white font-semibold mb-4 font-display">Company</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li><a href="#about" className="hover:text-emerald-400 transition-colors">About Us</a></li>
-              <li><a href="#projects" className="hover:text-emerald-400 transition-colors">Projects</a></li>
-              <li><a href="#contact" className="hover:text-emerald-400 transition-colors">Contact</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Careers</a></li>
-            </ul>
+            <div className="mb-8">
+              <img
+                src="/images/logo.png"
+                width={100}
+                alt="X-Web Labs Logo"
+                className="mb-4"
+              />
+              <p className="text-gray-400 mb-6 max-w-md font-body">
+                Transforming businesses through AI automation and intelligent solutions. Your partner in digital innovation.
+              </p>
+                <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <Mail size={20} className="text-emerald-400 flex-shrink-0" />
+                  <div>
+                    <div>
+                      <a 
+                        href="mailto:xweblabs@gmail.com" 
+                        className="text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        xweblabs@gmail.com
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Phone size={20} className="text-emerald-400 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="space-y-1 mt-1">
+                      <a 
+                        href="https://wa.me/61450803578" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        +61 450 803 578
+                      </a>
+                      <a 
+                        href="https://wa.me/263777350003" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        +263 777 350 003
+                      </a>
+                      <a 
+                        href="https://wa.me/263785401678" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        +263 785 401 678
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-white mb-4 font-display">Services</h3>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">AI Agents</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">AI Websites</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">SaaS</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">SEO Services</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">Generative Engine Optimization</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">Automation Systems</a></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3 className="text-white mb-4 font-display">Company</h3>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#about" className="hover:text-emerald-400 font-mono transition-colors">About Us</a></li>
+                  <li><a href="#projects" className="hover:text-emerald-400 font-mono transition-colors">Projects</a></li>
+                  <li><a href="#contact" className="hover:text-emerald-400 font-mono transition-colors">Contact</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p className="text-gray-400 text-small">
+        <div className="border-t border-gray-800 pt-8 text-center">
+          <p className="text-gray-400 text-sm">
             © 2025 X-Web Labs. All rights reserved. Powered by AI Innovation.
           </p>
         </div>

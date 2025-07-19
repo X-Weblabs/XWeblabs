@@ -8,7 +8,7 @@ import {
   ClientLogos,
   Services,
   AboutUs,
-  ProjectsDone,
+  // ProjectsDone,
   DataSection,
   ActionsSection,
   Footer, 
@@ -26,7 +26,7 @@ const Home = () => {
         <ClientLogos />
         <Services />
         <AboutUs />
-        <ProjectsDone />
+        {/* <ProjectsDone /> */}
         <DataSection />
         <ActionsSection />
         <Footer />
