@@ -23,10 +23,10 @@ const Home = () => {
       <div className="relative z-10">
         <Header />
         <Hero />
-        <ClientLogos />
         <Services />
         <AboutUs />
         {/* <ProjectsDone /> */}
+        <ClientLogos />
         <DataSection />
         <ActionsSection />
         <Footer />

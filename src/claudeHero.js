@@ -657,47 +657,48 @@ export const Hero = () => {
       </div>
 
       <div className="container mx-auto text-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="max-w-5xl mx-auto"
+      >
+        {/* Provocative accent text */}
+        <motion.p
+          className="text-emerald-400 mb-4 opacity-80 text-sm sm:text-base font-bold tracking-wide uppercase"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-5xl mx-auto"
+          transition={{ duration: 0.8, delay: 0.1 }}
         >
-          {/* Small accent text - more subtle */}
-          <motion.p
-            className="text-emerald-400 mb-4 opacity-60 text-sm sm:text-base font-medium tracking-wide uppercase" // Reduced opacity, uppercase for professional feel
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-          >
-            NEXT-GENERATION AI SOLUTIONS
-          </motion.p>
+          YOUR COMPETITION IS ALREADY USING AI
+        </motion.p>
 
-          {/* Responsive hero title with enhanced gradient and refined text */}
-          <motion.h1
-            className="hero-text text-white mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Build the Future with
-            <br />
-            <span className="gradient-text">
-              AI Automation
-            </span>
-          </motion.h1>
+        {/* Emotionally-charged hero title */}
+        <motion.h1
+          className="hero-text text-white mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          Stop Losing to
+          <br />
+          <span className="gradient-text">
+            AI-Powered Rivals
+          </span>
+        </motion.h1>
 
-          {/* Responsive subtitle - more concise */}
-          <motion.p
-            className="hero-subtitle text-gray-300 mb-8 max-w-3xl mx-auto opacity-80 text-base sm:text-lg md:text-xl leading-relaxed px-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Crafting intelligent AI solutions and cutting-edge digital experiences for a smarter, more efficient future.
-          </motion.p>
+        {/* Benefit-driven subtitle with urgency */}
+        <motion.p
+          className="hero-subtitle text-gray-300 mb-8 max-w-3xl mx-auto opacity-90 text-base sm:text-lg md:text-xl leading-relaxed px-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          Transform your business with AI automation that works 24/7, eliminates human error, and scales infinitely. 
+          <span className="text-emerald-400 font-semibold"> Your competitors won't wait—neither should you.</span>
+        </motion.p>
 
-          {/* Enhanced stats row - kept as is, it's already clean and well-structured */}
+        {/* Enhanced stats with social proof and urgency */}
           <motion.div
             className="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mb-8 px-4"
             initial={{ opacity: 0, y: 20 }}
@@ -717,8 +718,8 @@ export const Hero = () => {
               <div className="text-xs sm:text-sm text-gray-400">AI Support</div>
             </div>
           </motion.div>
-        </motion.div>
-      </div>
+      </motion.div>
+    </div>
 
       <style jsx>{`
         @keyframes grid-move {
@@ -787,103 +788,107 @@ export const ClientLogos = () => {
   );
 };
 
-// Services Component
+// Services Component - Updated with modern typography
 export const Services = () => {
   const [activeService, setActiveService] = useState(0);
 
   const services = [
-    {
-      icon: "🤖",
-      title: "AI Agents",
-      description: "Your digital workforce that never sleeps. Deploy intelligent agents that handle complex customer interactions, automate decision-making, and scale your operations beyond human limitations.",
-      features: [
-        "Conversational AI that understands context & intent",
-        "Self-learning systems that get smarter over time",
-        "Lightning-fast responses across all channels",
-        "Deep analytics that reveal customer psychology",
-        "WhatsApp, Web & omnichannel deployment"
-      ],
-      gradient: "from-emerald-500 to-teal-600",
-      image: "/images/AI.png",
-      stats: { clients: "150+", efficiency: "85%", support: "24/7" },
-      count: "01",
-    },
-    {
-      icon: "🌐",
-      title: "AI-Powered Websites",
-      description: "Websites that think, adapt, and convert. Your digital storefront becomes a living entity that learns from every visitor, personalizes experiences, and turns browsers into buyers.",
-      features: [
-        "Self-optimizing layouts that boost conversions",
-        "AI-driven personalization for every visitor",
-        "Blazing-fast performance that Google loves",
-        "Built-in SEO intelligence that ranks higher"
-      ],
-      gradient: "from-purple-500 to-pink-600",
-      image: "/images/AI2.png",
-      stats: { projects: "200+", conversion: "+40%", speed: "99%" },
-      count: "02",
-    },
-    {
-      icon: "☁️",
-      title: "SaaS Solutions",
-      description: "Transform your business model overnight. Custom SaaS platforms that turn your expertise into recurring revenue streams while automating everything from billing to user onboarding.",
-      features: [
-        "Multi-tenant architecture that scales infinitely",
-        "Frictionless user management & onboarding",
-        "Smart subscription billing that maximizes LTV",
-        "Real-time dashboards that reveal growth opportunities"
-      ],
-      gradient: "from-indigo-500 to-purple-600",
-      image: "/images/saas.png",
-      stats: { users: "10K+", uptime: "99.9%", scale: "∞" },
-      count: "03",
-    },
-    {
-      icon: "🔍",
-      title: "SEO Dominance",
-      description: "Own page one. Forever. AI-powered SEO strategies that don't just rank your content—they make your brand the definitive answer in your industry.",
-      features: [
-        "AI keyword intelligence that predicts trends",
-        "Content optimization that search engines crave",
-        "Technical SEO that leaves competitors behind",
-        "Performance tracking that proves ROI"
-      ],
-      gradient: "from-teal-500 to-emerald-600",
-      image: "/images/SEO2.png",
-      stats: { ranking: "+300%", traffic: "+150%", keywords: "500+" },
-      count: "04",
-    },
-    {
-      icon: "🤖",
-      title: "Generative Engine Optimization",
-      description: "The future of search is here, and it's conversational. Position your brand as the go-to source when AI assistants like ChatGPT, Claude, and Perplexity answer your customers' questions.",
-      features: [
-        "AI-first content strategies that get cited",
-        "Structured data optimization for AI engines",
-        "LLM-friendly content that gets recommended",
-        "Future-proof visibility across all AI platforms",
-      ],
-      gradient: "from-pink-500 to-rose-600",
-      image: "/images/geo.png",
-      stats: { visibility: "+250%", queries: "1M+", engines: "10+" },
-      count: "05",
-    },
-    {
-      icon: "⚡",
-      title: "Automation Systems",
-      description: "Eliminate the mundane. Amplify the extraordinary. Custom automation that handles your repetitive tasks while you focus on what truly matters—growing your empire.",
-      features: [
-        "Workflow automation that runs while you sleep",
-        "Data processing that turns chaos into insights",
-        "API integrations that connect your entire stack",
-        "Business intelligence that predicts the future"
-      ],
-      gradient: "from-pink-500 to-purple-600",
-      image: "/images/auto2.png",
-      stats: { automation: "95%", savings: "$50K+", time: "80%" },
-      count: "06",
-    },
-  ];
+      {
+        icon: "🤖",
+        title: "AI Agents",
+        description:
+          "Your digital workforce that never sleeps. Deploy intelligent agents that handle complex customer interactions, automate decision-making, and scale your operations beyond human limitations.",
+        features: [
+          "Conversational AI that understands context & intent",
+          "Self-learning systems that get smarter over time",
+          "Lightning-fast responses across all channels",
+          "Deep analytics that reveal customer psychology",
+          "WhatsApp, Web & omnichannel deployment"
+        ],
+        gradient: "from-emerald-500 to-teal-600",
+        image: "/images/AI.png",
+        stats: { clients: "150+", efficiency: "85%", support: "24/7" },
+        count: "01",
+      },
+      {
+        icon: "🌐",
+        title: "AI-Powered Websites",
+        description: "Websites that think, adapt, and convert. Your digital storefront becomes a living entity that learns from every visitor, personalizes experiences, and turns browsers into buyers.",
+        features: [
+          "Self-optimizing layouts that boost conversions", 
+          "AI-driven personalization for every visitor", 
+          "Blazing-fast performance that Google loves", 
+          "Built-in SEO intelligence that ranks higher"
+        ],
+        gradient: "from-purple-500 to-pink-600",
+        image: "/images/AI2.png",
+        stats: { projects: "200+", conversion: "+40%", speed: "99%" },
+        count: "02",
+      },
+      {
+        icon: "☁️",
+        title: "SaaS Solutions",
+        description:
+          "Transform your business model overnight. Custom SaaS platforms that turn your expertise into recurring revenue streams while automating everything from billing to user onboarding.",
+        features: [
+          "Multi-tenant architecture that scales infinitely", 
+          "Frictionless user management & onboarding", 
+          "Smart subscription billing that maximizes LTV", 
+          "Real-time dashboards that reveal growth opportunities"
+        ],
+        gradient: "from-indigo-500 to-purple-600",
+        image: "/images/saas.png",
+        stats: { users: "10K+", uptime: "99.9%", scale: "∞" },
+        count: "03",
+      },
+      {
+        icon: "🔍",
+        title: "SEO Dominance",
+        description: "Own page one. Forever. AI-powered SEO strategies that don't just rank your content—they make your brand the definitive answer in your industry.",
+        features: [
+          "AI keyword intelligence that predicts trends", 
+          "Content optimization that search engines crave", 
+          "Technical SEO that leaves competitors behind", 
+          "Performance tracking that proves ROI"
+        ],
+        gradient: "from-teal-500 to-emerald-600",
+        image: "/images/SEO2.png",
+        stats: { ranking: "+300%", traffic: "+150%", keywords: "500+" },
+        count: "04",
+      },
+      {
+        icon: "🤖",
+        title: "Generative Engine Optimization",
+        description:
+          "The future of search is here, and it's conversational. Position your brand as the go-to source when AI assistants like ChatGPT, Claude, and Perplexity answer your customers' questions.",
+        features: [
+          "AI-first content strategies that get cited",
+          "Structured data optimization for AI engines",
+          "LLM-friendly content that gets recommended",
+          "Future-proof visibility across all AI platforms",
+        ],
+        gradient: "from-pink-500 to-rose-600",
+        image: "/images/geo.png",
+        stats: { visibility: "+250%", queries: "1M+", engines: "10+" },
+        count: "05",
+      },
+      {
+        icon: "⚡",
+        title: "Automation Systems",
+        description: "Eliminate the mundane. Amplify the extraordinary. Custom automation that handles your repetitive tasks while you focus on what truly matters—growing your empire.",
+        features: [
+          "Workflow automation that runs while you sleep", 
+          "Data processing that turns chaos into insights", 
+          "API integrations that connect your entire stack", 
+          "Business intelligence that predicts the future"
+        ],
+        gradient: "from-pink-500 to-purple-600",
+        image: "/images/auto2.png",
+        stats: { automation: "95%", savings: "$50K+", time: "80%" },
+        count: "06",
+      },
+    ];
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -895,7 +900,9 @@ export const Services = () => {
       const scrollTop = window.pageYOffset;
       const windowHeight = window.innerHeight;
 
+      // Check if we're in the services section
       if (scrollTop >= sectionTop - windowHeight / 2 && scrollTop <= sectionTop + sectionHeight - windowHeight / 2) {
+        // Calculate progress through the services section
         const relativeScroll = scrollTop - sectionTop + windowHeight / 2;
         const serviceHeight = sectionHeight / services.length;
         const newActiveService = Math.floor(relativeScroll / serviceHeight);
@@ -912,53 +919,43 @@ export const Services = () => {
 
   return (
     <section id="services" className="bg-gradient-to-br from-gray-50 to-gray-100 text-black">
+      {/* Section Header - Standalone with proper spacing */}
       <div className="container mx-auto px-6 py-20">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 30 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
         >
           <motion.p
             className="text-accent text-gray-600 mb-4 font-bold text-sm tracking-wider"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
             REVOLUTIONARY SOLUTIONS
           </motion.p>
-          <motion.h2
-            className="text-4xl lg:text-6xl font-bold mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-          >
+
+          <h2 className="text-4xl lg:text-6xl font-bold mb-6">
             Services That{" "}
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            <span className="gradient-text">
               Transform Businesses
             </span>
-          </motion.h2>
-          <motion.p
-            className="text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-          >
+          </h2>
+
+          <p className="text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed">
             Stop competing on price. Start winning on innovation. Our AI-powered solutions don't just automate—they revolutionize how you operate, engage, and grow.
-          </motion.p>
+          </p>
         </motion.div>
       </div>
+
+      {/* Services Content - Separate container */}
       <div className="relative">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+            {/* Left Side - Scrolling Text Content */}
             <div className="space-y-8 lg:space-y-32">
               {services.map((service, index) => (
                 <motion.div
@@ -966,48 +963,39 @@ export const Services = () => {
                   className="space-y-6 lg:space-y-8 py-8 lg:py-16 lg:min-h-screen lg:flex lg:flex-col lg:justify-center"
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  viewport={{ once: false, margin: "-30%" }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  viewport={{ once: true, margin: "-30%" }}
+                  transition={{ duration: 0.8 }}
                 >
+                  {/* Service Number */}
                   <motion.div
                     className="flex items-center mb-2"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    viewport={{ once: false }}
-                    transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
                   >
                     <div className="flex items-center">
                       <span className="text-pink-500 text-lg font-bold mr-4">●</span>
                       <motion.p
                         className="text-accent text-gray-600 font-bold text-sm tracking-wider"
-                        style={{ fontSize: 20 }}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        viewport={{ once: false }}
-                        transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
+                        style={{fontSize: 20}}
                       >
                         {service.count}
                       </motion.p>
                     </div>
                   </motion.div>
+
+                  {/* Mobile Image - Show on small screens */}
                   <div className="lg:hidden mb-6">
-                    <motion.div
-                      className="relative rounded-2xl overflow-hidden shadow-xl"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      viewport={{ once: false }}
-                      transition={{ duration: 0.6, ease: "easeInOut" }}
-                    >
+                    <div className="relative rounded-2xl overflow-hidden shadow-xl">
                       <img
                         src={service.image || "/placeholder.svg"}
                         alt={service.title}
                         className="w-full h-48 object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      
+                      {/* Mobile Overlay Content */}
                       <div className="absolute bottom-4 left-4 right-4">
                         <div className="flex items-center">
                           <div
@@ -1023,14 +1011,15 @@ export const Services = () => {
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
+
+                  {/* Service Title */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    viewport={{ once: false }}
-                    transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                   >
                     <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 leading-tight">
                       {service.title.split(" ").map((word, idx) => (
@@ -1042,23 +1031,25 @@ export const Services = () => {
                     </h3>
                     <div className="h-1 w-20 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full mb-6 lg:mb-8"></div>
                   </motion.div>
+
+                  {/* Service Description */}
                   <motion.p
                     className="text-lg lg:text-xl text-gray-700 leading-relaxed mb-6 lg:mb-8 max-w-lg"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    viewport={{ once: false }}
-                    transition={{ duration: 0.6, delay: 0.3, ease: "easeInOut" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
                   >
                     {service.description}
                   </motion.p>
+
+                  {/* Features List */}
                   <motion.div
                     className="space-y-3 lg:space-y-4"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    viewport={{ once: false }}
-                    transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                   >
                     {service.features.map((feature, idx) => (
                       <motion.div
@@ -1066,9 +1057,8 @@ export const Services = () => {
                         className="flex items-center text-gray-700"
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        viewport={{ once: false }}
-                        transition={{ duration: 0.5, delay: 0.4 + idx * 0.1, ease: "easeInOut" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
                       >
                         <div className="w-2 h-2 bg-cyan-600 rounded-full mr-4 flex-shrink-0"></div>
                         <span className="text-base lg:text-lg">{feature}</span>
@@ -1078,17 +1068,20 @@ export const Services = () => {
                 </motion.div>
               ))}
             </div>
+
+            {/* Right Side - Sticky Image Container (Desktop Only) */}
             <div className="hidden lg:block sticky top-24 h-[calc(100vh-6rem)] flex items-center justify-center">
               <div className="relative w-full max-w-2xl">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`image-${activeService}`}
                     className="relative"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.7, ease: "easeInOut" }}
                   >
+                    {/* Main Image Container */}
                     <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                       <img
                         src={services[activeService].image || "/placeholder.svg"}
@@ -1096,6 +1089,8 @@ export const Services = () => {
                         className="w-full h-[60vh] object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                      {/* Overlay Content */}
                       <div className="absolute bottom-8 left-8 right-8">
                         <div className="flex items-center mb-4">
                           <div
@@ -1110,6 +1105,8 @@ export const Services = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Decorative Elements */}
                     <div className="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-r from-cyan-400/20 to-purple-500/20 rounded-full blur-2xl"></div>
                     <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-xl"></div>
                   </motion.div>
@@ -1118,13 +1115,15 @@ export const Services = () => {
             </div>
           </div>
         </div>
+
+        {/* Bottom spacing */}
         <div className="pb-20"></div>
       </div>
     </section>
   );
 };
 
-// AboutUs Component
+// About Us Component - Fixed for responsive layout and modern team section
 export const AboutUs = () => {
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
@@ -1135,7 +1134,7 @@ export const AboutUs = () => {
   const [isClient, setIsClient] = useState(false);
   const [isHeroVisible, setIsHeroVisible] = useState(false);
 
-  const teamMembers = [
+const teamMembers = [
     {
       name: "Mandlenkosi Ndiweni",
       role: "Chief Technology Officer",
@@ -1143,7 +1142,7 @@ export const AboutUs = () => {
     },
     {
       name: "Mqhelisi Mzizi",
-      role: "Chief Marketing Officer",
+      role: "Chief Marketing Officer", 
       bio: "The growth catalyst who turns cutting-edge technology into compelling stories that drive exponential business growth."
     },
     {
@@ -1167,8 +1166,10 @@ export const AboutUs = () => {
     setIsClient(true);
   }, []);
 
+  // Intersection Observer to detect hero section visibility
   useEffect(() => {
-    const heroElement = document.querySelector('#hero');
+    const heroElement = document.querySelector('#hero'); // Assuming your hero has id="hero"
+    
     if (!heroElement) return;
 
     const observer = new IntersectionObserver(
@@ -1178,7 +1179,7 @@ export const AboutUs = () => {
       {
         root: null,
         rootMargin: '0px',
-        threshold: 0.1
+        threshold: 0.1 // Trigger when 10% of hero is visible
       }
     );
 
@@ -1192,9 +1193,11 @@ export const AboutUs = () => {
   useEffect(() => {
     if (!isClient || !mountRef.current) return;
 
+    // Scene setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
     mountRef.current.appendChild(renderer.domElement);
@@ -1203,7 +1206,8 @@ export const AboutUs = () => {
     rendererRef.current = renderer;
     cameraRef.current = camera;
 
-    const colors = [0x3b82f6, 0x06b6d4, 0x8b5cf6];
+    // Create rings with different colors
+    const colors = [0x3b82f6, 0x06b6d4, 0x8b5cf6]; // blue, turquoise, purple
     const rings = [];
 
     for (let i = 0; i < 8; i++) {
@@ -1214,6 +1218,7 @@ export const AboutUs = () => {
         opacity: 0.3,
         side: THREE.DoubleSide
       });
+      
       const ring = new THREE.Mesh(geometry, material);
       ring.position.set(
         (Math.random() - 0.5) * 20,
@@ -1223,6 +1228,7 @@ export const AboutUs = () => {
       ring.rotation.x = Math.random() * Math.PI;
       ring.rotation.y = Math.random() * Math.PI;
       ring.rotation.z = Math.random() * Math.PI;
+      
       scene.add(ring);
       rings.push(ring);
     }
@@ -1230,28 +1236,42 @@ export const AboutUs = () => {
     ringsRef.current = rings;
     camera.position.z = 8;
 
+    // Mouse move handler
     const handleMouseMove = (event) => {
       mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-      const time = Date.now() * 0.001;
 
+      // Update rings based on mouse position and hero visibility
       rings.forEach((ring, index) => {
+        const time = Date.now() * 0.001;
+        
+        // Smooth follow cursor movement
         const targetX = mouseRef.current.x * 3 + Math.sin(time + index) * 2;
         const targetY = mouseRef.current.y * 3 + Math.cos(time + index) * 2;
+        
         ring.position.x += (targetX - ring.position.x) * 0.1;
         ring.position.y += (targetY - ring.position.y) * 0.1;
+        
+        // Continuous rotation
         ring.rotation.x += 0.01;
         ring.rotation.y += 0.02;
         ring.rotation.z += 0.005;
+        
+        // Pulsing effect
         const scale = 1 + Math.sin(time * 2 + index) * 0.3;
         ring.scale.set(scale, scale, scale);
+        
+        // Opacity variation - hide when hero is visible
         if (isHeroVisible) {
+          // Fade out rings when hero is visible
           ring.material.opacity = Math.max(0, ring.material.opacity - 0.02);
         } else {
+          // Fade in rings when hero is not visible
           const targetOpacity = 0.2 + Math.sin(time + index) * 0.1;
           ring.material.opacity = Math.min(targetOpacity, ring.material.opacity + 0.02);
         }
@@ -1260,9 +1280,11 @@ export const AboutUs = () => {
       renderer.render(scene, camera);
     };
 
+    // Event listeners
     window.addEventListener('mousemove', handleMouseMove);
     animate();
 
+    // Resize handler
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -1271,6 +1293,7 @@ export const AboutUs = () => {
 
     window.addEventListener('resize', handleResize);
 
+    // Cleanup
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
@@ -1279,8 +1302,9 @@ export const AboutUs = () => {
       }
       renderer.dispose();
     };
-  }, [isClient, isHeroVisible]);
+  }, [isClient, isHeroVisible]); // Add isHeroVisible to dependencies
 
+  // Team card background style
   const teamCardStyle = {
     backgroundImage: `
       linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
@@ -1292,63 +1316,37 @@ export const AboutUs = () => {
     transition: 'all 0.5s ease'
   };
 
+  const teamCardHoverStyle = {
+    backgroundSize: 'cover, 110%',
+    backgroundPosition: 'center center, center center'
+  };
+
   return (
     <section id="about" className="py-20 px-6 bg-black text-white overflow-x-hidden relative">
-      <div
-        ref={mountRef}
+      {/* 3D Canvas Background */}
+      <div 
+        ref={mountRef} 
         className="absolute inset-0 pointer-events-none z-0"
         style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}
       />
+      
+      {/* Content with higher z-index */}
       <div className="container mx-auto max-w-7xl relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          <motion.div
-            className="max-w-full"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          >
-            <motion.p
-              className="text-accent text-emerald-400 mb-4 text-sm sm:text-base"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-            >
-              THE ARCHITECTS OF TOMORROW
-            </motion.p>
-            <motion.h2
-              className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-            >
+          <div className="max-w-full">
+            <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">THE ARCHITECTS OF TOMORROW</p>
+
+            <h2 className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
               We're Not Just <span className="gradient-text">Building AI</span>
               <br />
               <span className="text-2xl sm:text-3xl lg:text-4xl text-gray-300">We're Redefining Business</span>
-            </motion.h2>
-            <motion.p
-              className="section-subtitle text-gray-300 mb-6 text-base sm:text-lg leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-            >
+            </h2>
+
+            <p className="section-subtitle text-gray-300 mb-6 text-base sm:text-lg leading-relaxed">
               Born from the belief that every business deserves superintelligent capabilities. We're the rebels who refuse to accept "that's just how it's done" and instead ask "what if we could do it better?"
-            </motion.p>
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeInOut" }}
-            >
+            </p>
+
+            <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-300 text-sm sm:text-base">Battle-tested across 50+ transformations</span>
@@ -1361,45 +1359,16 @@ export const AboutUs = () => {
                 <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-300 text-sm sm:text-base">Trusted by visionaries worldwide</span>
               </div>
-            </motion.div>
-          </motion.div>
-          <motion.div
-            className="relative max-w-full"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          >
+            </div>
+          </div>
+
+          <div className="relative max-w-full">
             <div className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 p-6 sm:p-8 rounded-2xl backdrop-blur-sm border border-gray-700">
-              <motion.h3
-                className="text-xl sm:text-2xl font-bold mb-4 text-white font-display"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
-              >
-                Our Mission
-              </motion.h3>
-              <motion.p
-                className="text-gray-300 mb-6 font-body text-sm sm:text-base leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-              >
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-white font-display">Our Mission</h3>
+              <p className="text-gray-300 mb-6 font-body text-sm sm:text-base leading-relaxed">
                 To democratize superintelligence. Every business—from scrappy startups to Fortune 500 giants—deserves AI capabilities that were once exclusive to tech titans. We're leveling the playing field.
-              </motion.p>
-              <motion.div
-                className="grid grid-cols-2 gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.3, ease: "easeInOut" }}
-              >
+              </p>
+              <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
                   <div className="text-3xl sm:text-4xl font-bold text-emerald-400 font-display">50+</div>
                   <div className="text-xs sm:text-sm text-gray-400">Businesses Transformed</div>
@@ -1408,63 +1377,30 @@ export const AboutUs = () => {
                   <div className="text-3xl sm:text-4xl font-bold text-teal-400 font-display">10x</div>
                   <div className="text-xs sm:text-sm text-gray-400">Average ROI</div>
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-        <motion.div
-          className="text-center mb-12 max-w-full"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 30 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        >
-          <motion.p
-            className="text-accent text-emerald-400 mb-4 text-sm sm:text-base"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-          >
-            THE DREAM TEAM
-          </motion.p>
-          <motion.h3
-            className="text-3xl sm:text-4xl font-bold mb-4 font-display"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-          >
-            Meet Your Success Partners
-          </motion.h3>
-          <motion.p
-            className="section-subtitle text-gray-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-          >
+
+      {/* Enhanced Team Section */}
+        <div className="text-center mb-12 max-w-full">
+          <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">THE DREAM TEAM</p>
+          <h3 className="text-3xl sm:text-4xl font-bold mb-4 font-display">Meet Your Success Partners</h3>
+          <p className="section-subtitle text-gray-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             Five brilliant minds united by one obsession: making your business unstoppable through AI
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
+
+        {/* Top Row: 2 Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 mb-6">
           {teamMembers.slice(0, 2).map((member, index) => (
-            <motion.div
+            <div
               key={index}
               className="p-6 rounded-2xl backdrop-blur-sm border border-gray-700 hover:border-purple-500 transition-all duration-300 group flex flex-col items-center text-center relative overflow-hidden hover:shadow-2xl hover:shadow-purple-500/20"
               style={teamCardStyle}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: index * 0.1, ease: "easeInOut" }}
             >
-              <div
-                className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+              {/* Abstract Background Pattern Overlay */}
+              <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
                 style={{
                   background: `
                     repeating-linear-gradient(
@@ -1484,74 +1420,36 @@ export const AboutUs = () => {
                   `
                 }}
               />
-              <motion.div
-                className="relative w-28 h-28 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-6 overflow-hidden z-10"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
-              >
+
+              {/* Modern Placeholder for Image */}
+              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-6 overflow-hidden z-10">
                 <svg className="w-16 h-16 text-white opacity-80" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM12 12.5c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5z"></path>
                 </svg>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </motion.div>
-              <motion.h4
-                className="text-xl sm:text-2xl font-semibold text-white mb-2 font-display break-words z-10 relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-              >
+              </div>
+
+              <h4 className="text-xl sm:text-2xl font-semibold text-white mb-2 font-display break-words z-10 relative">
                 {member.name}
-              </motion.h4>
-              <motion.p
-                className="text-accent text-emerald-400 text-sm sm:text-base mb-3 z-10 relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.3, ease: "easeInOut" }}
-              >
-                {member.role}
-              </motion.p>
-              <motion.p
-                className="text-gray-300 text-sm sm:text-base leading-relaxed flex-grow z-10 relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
-              >
-                {member.bio}
-              </motion.p>
-              <motion.div
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full group-hover:w-1/3 transition-all duration-300 z-10"
-                initial={{ width: 0 }}
-                whileInView={{ width: "33%" }}
-                exit={{ width: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              />
-            </motion.div>
+              </h4>
+              <p className="text-accent text-emerald-400 text-sm sm:text-base mb-3 z-10 relative">{member.role}</p>
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed flex-grow z-10 relative">{member.bio}</p>
+
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full group-hover:w-1/3 transition-all duration-300 z-10"></div>
+            </div>
           ))}
         </div>
+
+        {/* Bottom Row: 3 Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {teamMembers.slice(2).map((member, index) => (
-            <motion.div
+            <div
               key={index}
               className="p-6 rounded-2xl backdrop-blur-sm border border-gray-700 hover:border-purple-500 transition-all duration-300 group flex flex-col items-center text-center relative overflow-hidden hover:shadow-2xl hover:shadow-purple-500/20"
               style={teamCardStyle}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: index * 0.1, ease: "easeInOut" }}
             >
-              <div
-                className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+              {/* Abstract Background Pattern Overlay */}
+              <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
                 style={{
                   background: `
                     repeating-linear-gradient(
@@ -1571,58 +1469,23 @@ export const AboutUs = () => {
                   `
                 }}
               />
-              <motion.div
-                className="relative w-28 h-28 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-6 overflow-hidden z-10"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
-              >
+
+              {/* Modern Placeholder for Image */}
+              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-6 overflow-hidden z-10">
                 <svg className="w-16 h-16 text-white opacity-80" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM12 12.5c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5z"></path>
                 </svg>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </motion.div>
-              <motion.h4
-                className="text-xl sm:text-2xl font-semibold text-white mb-2 font-display break-words z-10 relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-              >
+              </div>
+
+              <h4 className="text-xl sm:text-2xl font-semibold text-white mb-2 font-display break-words z-10 relative">
                 {member.name}
-              </motion.h4>
-              <motion.p
-                className="text-accent text-emerald-400 text-sm sm:text-base mb-3 z-10 relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.3, ease: "easeInOut" }}
-              >
-                {member.role}
-              </motion.p>
-              <motion.p
-                className="text-gray-300 text-sm sm:text-base leading-relaxed flex-grow z-10 relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
-              >
-                {member.bio}
-              </motion.p>
-              <motion.div
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full group-hover:w-1/3 transition-all duration-300 z-10"
-                initial={{ width: 0 }}
-                whileInView={{ width: "33%" }}
-                exit={{ width: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              />
-            </motion.div>
+              </h4>
+              <p className="text-accent text-emerald-400 text-sm sm:text-base mb-3 z-10 relative">{member.role}</p>
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed flex-grow z-10 relative">{member.bio}</p>
+
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full group-hover:w-1/3 transition-all duration-300 z-10"></div>
+            </div>
           ))}
         </div>
       </div>
@@ -1630,7 +1493,108 @@ export const AboutUs = () => {
   );
 };
 
-// DataSection Component
+// Projects Done Component - Updated with modern typography
+// export const ProjectsDone = () => {
+//   const projects = [
+//     {
+//       title: "E-commerce AI Assistant",
+//       category: "AI Agent",
+//       description: "Intelligent chatbot that increased customer engagement by 300% for a major retailer",
+//       image: "https://images.unsplash.com/photo-1655393001768-d946c97d6fd1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85",
+//       technologies: ["Natural Language Processing", "Machine Learning", "API Integration"]
+//     },
+//     {
+//       title: "Healthcare Management Platform",
+//       category: "AI Website",
+//       description: "Comprehensive healthcare platform with AI-powered patient management and analytics",
+//       image: "https://images.pexels.com/photos/16053029/pexels-photo-16053029.jpeg",
+//       technologies: ["React", "AI Analytics", "Data Visualization", "Cloud Computing"]
+//     },
+//     {
+//       title: "Financial Services SEO Campaign",
+//       category: "SEO Optimization",
+//       description: "Achieved 400% increase in organic traffic for a fintech startup through AI-driven SEO",
+//       image: "https://images.unsplash.com/photo-1601132359864-c974e79890ac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85",
+//       technologies: ["AI Content Generation", "Technical SEO", "Analytics", "Performance Optimization"]
+//     },
+//     {
+//       title: "Manufacturing Automation System",
+//       category: "Automation",
+//       description: "Automated production line monitoring system that reduced downtime by 60%",
+//       image: "https://images.unsplash.com/photo-1700498466261-824cbd01974e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwyfHxkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwwfHx8Ymx1ZXwxNzUyNzQwNjYyfDA&ixlib=rb-4.1.0&q=85",
+//       technologies: ["IoT Integration", "Real-time Monitoring", "Predictive Analytics", "Workflow Automation"]
+//     }
+//   ];
+
+//   return (
+//     <section id="projects" className="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100 text-black">
+//       <div className="container mx-auto">
+//         <motion.div
+//           className="text-center mb-16"
+//           initial={{ opacity: 0, y: 30 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           viewport={{ once: true }}
+//           transition={{ duration: 0.8 }}
+//         >
+//           <p className="text-accent text-gray-600 mb-4">OUR WORK</p>
+//           <h2 className="section-title mb-6">
+//             Recent <span className="gradient-text">Projects</span>
+//           </h2>
+//           <p className="section-subtitle text-gray-700 max-w-2xl mx-auto">
+//             Explore our successful implementations and see how we've helped businesses transform with AI
+//           </p>
+//         </motion.div>
+        
+//         <div className="grid md:grid-cols-2 gap-8">
+//           {projects.map((project, index) => (
+//             <motion.div
+//               key={index}
+//               className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:shadow-3xl transition-all duration-300"
+//               initial={{ opacity: 0, y: 30 }}
+//               whileInView={{ opacity: 1, y: 0 }}
+//               viewport={{ once: true }}
+//               transition={{ duration: 0.5, delay: index * 0.1 }}
+//               whileHover={{ y: -5 }}
+//             >
+//               <div className="relative h-64 overflow-hidden">
+//                 <img 
+//                   src={project.image}
+//                   alt={project.title}
+//                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+//                 />
+//                 <div className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1 rounded-full text-accent font-semibold">
+//                   {project.category}
+//                 </div>
+//               </div>
+              
+//               <div className="p-8">
+//                 <h3 className="text-2xl font-bold mb-4 font-display">{project.title}</h3>
+//                 <p className="text-gray-600 mb-6 font-body">{project.description}</p>
+                
+//                 <div className="mb-6">
+//                   <h4 className="text-small font-semibold text-gray-800 mb-2 font-mono">TECHNOLOGIES USED:</h4>
+//                   <div className="flex flex-wrap gap-2">
+//                     {project.technologies.map((tech, idx) => (
+//                       <span key={idx} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-small">
+//                         {tech}
+//                       </span>
+//                     ))}
+//                   </div>
+//                 </div>
+                
+//                 <button className="text-purple-600 font-semibold hover:text-purple-800 transition-colors duration-200 font-display">
+//                   View Details →
+//                 </button>
+//               </div>
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// Data Section Component - Fixed for responsive layout
 export const DataSection = () => {
   return (
     <section className="py-20 px-6 bg-black text-white overflow-x-hidden">
@@ -1639,51 +1603,25 @@ export const DataSection = () => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
             className="max-w-full"
           >
-            <motion.p
-              className="text-accent text-emerald-400 mb-4 text-sm sm:text-base"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-            >
-              DATA SUPERPOWERS
-            </motion.p>
-            <motion.h2
-              className="section-title mb-8 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-            >
+            <p className="text-accent text-emerald-400 mb-4 text-sm sm:text-base">DATA SUPERPOWERS</p>
+            
+            <h2 className="section-title mb-8 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
               Your Data Is Sitting On
               <br />
-              <span className="gradient-text break-words">A Fortune</span>
-            </motion.h2>
-            <motion.p
-              className="section-subtitle text-gray-300 mb-8 text-base sm:text-lg leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-            >
+              <span className="gradient-text break-words">
+                A Fortune
+              </span>
+            </h2>
+            
+            <p className="section-subtitle text-gray-300 mb-8 text-base sm:text-lg leading-relaxed">
               Stop letting valuable insights slip through the cracks. Our AI doesn't just analyze your data—it transforms it into your competitive advantage, revealing opportunities your competitors can't see.
-            </motion.p>
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeInOut" }}
-            >
+            </p>
+            
+            <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-300 text-sm sm:text-base">Real-time intelligence that predicts market shifts</span>
@@ -1696,40 +1634,28 @@ export const DataSection = () => {
                 <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-300 text-sm sm:text-base">Predictive models that see around corners</span>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
+
           <motion.div
             className="relative max-w-full"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
             <div className="relative">
-              <motion.img
+              <img 
                 src="https://images.unsplash.com/photo-1601132359864-c974e79890ac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fGJsdWV8MTc1MjYzNDc2NXww&ixlib=rb-4.1.0&q=85"
-                alt="AI Business Intelligence"
+                alt="AI Business Intelligence" 
                 className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl max-w-full"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
               />
-              <motion.div
-                className="absolute top-4 left-4 bg-purple-600 text-white px-3 py-2 rounded-lg shadow-lg max-w-[calc(100%-2rem)]"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-              >
+              <div className="absolute top-4 left-4 bg-purple-600 text-white px-3 py-2 rounded-lg shadow-lg max-w-[calc(100%-2rem)]">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-white rounded-full flex-shrink-0"></div>
                   <span className="text-xs sm:text-sm break-words">AI analyzing customer behavior patterns</span>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -1738,7 +1664,8 @@ export const DataSection = () => {
   );
 };
 
-// ActionsSection Component
+// Actions Section Component - Fixed for responsive layout
+// Actions Section Component - Enhanced with urgency and transformation focus
 export const ActionsSection = () => {
   return (
     <section className="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100 text-black overflow-x-hidden">
@@ -1747,50 +1674,24 @@ export const ActionsSection = () => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
             className="max-w-full"
           >
-            <motion.div
-              className="flex items-center space-x-3 mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-            >
+            <div className="flex items-center space-x-3 mb-4">
               <div className="w-3 h-3 bg-emerald-600 rounded-full"></div>
               <div className="w-3 h-3 bg-teal-600 rounded-full"></div>
-            </motion.div>
-            <motion.h2
-              className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight break-words"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-            >
+            </div>
+            
+            <h2 className="section-title mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight break-words">
               Stop Planning. Start Dominating.
-            </motion.h2>
-            <motion.p
-              className="section-subtitle text-gray-700 mb-8 text-base sm:text-lg leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-            >
+            </h2>
+            
+            <p className="section-subtitle text-gray-700 mb-8 text-base sm:text-lg leading-relaxed">
               While your competitors debate AI strategy, you'll already be reaping the rewards. Every day you wait is revenue lost to those who act decisively.
-            </motion.p>
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeInOut" }}
-            >
+            </p>
+            
+            <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700 text-sm sm:text-base">Business intelligence that never sleeps</span>
@@ -1807,51 +1708,59 @@ export const ActionsSection = () => {
                 <div className="w-2 h-2 bg-pink-600 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700 text-sm sm:text-base">SEO dominance that compounds daily</span>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
+          
           <motion.div
             className="relative max-w-full"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            <motion.div
-              className="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl max-w-full"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-            >
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl max-w-full">
               <div className="space-y-6">
-                {[
-                  { icon: "AI", title: "Analyzing customer psychology...", subtitle: "Discovering hidden buying patterns", color: "emerald-600" },
-                  { icon: "📊", title: "Generating SEO domination strategy", subtitle: "Targeting competitor blind spots", color: "teal-600" },
-                  { icon: "🔄", title: "Deploying automated workflows", subtitle: "Eliminating manual inefficiencies", color: "purple-600" },
-                  { icon: "📈", title: "Optimizing conversion engines", subtitle: "Maximizing revenue per visitor", color: "pink-600" }
-                ].map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    viewport={{ once: false }}
-                    transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeInOut" }}
-                  >
-                    <div className={`w-8 h-8 bg-${item.color} rounded-full flex items-center justify-center flex-shrink-0`}>
-                      <span className="text-white text-sm font-bold font-mono">{item.icon}</span>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">{item.title}</div>
-                      <div className="text-xs sm:text-sm text-gray-600">{item.subtitle}</div>
-                    </div>
-                  </motion.div>
-                ))}
+                <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm font-bold font-mono">AI</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">Analyzing customer psychology...</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Discovering hidden buying patterns</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm font-bold">📊</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">Generating SEO domination strategy</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Targeting competitor blind spots</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm font-bold">🔄</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">Deploying automated workflows</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Eliminating manual inefficiencies</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm font-bold">📈</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 font-display text-sm sm:text-base">Optimizing conversion engines</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Maximizing revenue per visitor</div>
+                  </div>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -1859,7 +1768,7 @@ export const ActionsSection = () => {
   );
 };
 
-// Footer Component
+// Footer Component - Updated with modern typography
 export const Footer = () => {
   const [formData, setFormData] = useState({
     companyName: '',
@@ -1868,12 +1777,13 @@ export const Footer = () => {
     projectType: '',
     projectDetails: ''
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
   const services = [
     'AI Agents',
-    'AI Websites',
+    'AI Websites', 
     'SaaS',
     'SEO Services',
     'Generative Engine Optimization',
@@ -1910,6 +1820,8 @@ export const Footer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
+    // Simulate form submission
     setTimeout(() => {
       setSubmitMessage('Thank you! We\'ll get back to you soon.');
       setIsSubmitting(false);
@@ -1920,343 +1832,210 @@ export const Footer = () => {
         projectType: '',
         projectDetails: ''
       });
+      
+      // Clear success message after 3 seconds
       setTimeout(() => setSubmitMessage(''), 3000);
     }, 1000);
   };
 
   return (
-    <footer className="bg-black text-white py-12 px-4 overflow-x-hidden">
-      <div className="container mx-auto max-w-7xl">
-        <div className="grid lg:grid-cols-2 gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="max-w-full"
-          >
-            <motion.h2
-              className="text-2xl sm:text-3xl font-bold mb-6 font-display text-emerald-400 font-mono"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-            >
-              Get In Touch
-            </motion.h2>
-            <motion.p
-              className="text-gray-400 mb-8 font-body text-sm sm:text-base max-w-md"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-            >
+    <footer className="bg-black text-white py-12 px-6" id="contact">
+      <div className="container mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 mb-12">
+          {/* Contact Form Section */}
+          <div>
+            <h2 className="text-3xl font-bold mb-6 font-display text-emerald-400 font-mono">Get In Touch</h2>
+            <p className="text-gray-400 mb-8 font-body">
               Ready to transform your business with AI? Tell us about your project and let's create something amazing together.
-            </motion.p>
-            <motion.div
-              className="space-y-6 max-w-full"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-            >
+            </p>
+            
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">Email Address *</label>
-                <motion.input
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Email Address *
+                </label>
+                <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all box-border"
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all"
                   placeholder="your.email@example.com"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">Business/Company Name *</label>
-                <motion.input
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Business/Company Name *
+                </label>
+                <input
                   type="text"
                   name="companyName"
                   value={formData.companyName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all box-border"
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all"
                   placeholder="Your business or company name"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.5, ease: "easeInOut" }}
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">Industry Type *</label>
-                <motion.select
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Industry Type *
+                </label>
+                <select
                   name="industryType"
                   value={formData.industryType}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-gray-900 border font-mono border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white transition-all box-border"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
+                  className="w-full px-4 py-3 bg-gray-900 border font-mono border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white transition-all"
                 >
                   <option value="">Select your industry...</option>
                   {industries.map((industry, index) => (
-                    <option key={index} value={industry}>{industry}</option>
+                    <option key={index} value={industry}>
+                      {industry}
+                    </option>
                   ))}
-                </motion.select>
+                </select>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">Project Type *</label>
-                <motion.select
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Project Type *
+                </label>
+                <select
                   name="projectType"
                   value={formData.projectType}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white transition-all box-border"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.7, ease: "easeInOut" }}
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white transition-all"
                 >
                   <option value="">Select a service...</option>
                   {services.map((service, index) => (
-                    <option key={index} value={service}>{service}</option>
+                    <option key={index} value={service}>
+                      {service}
+                    </option>
                   ))}
-                </motion.select>
+                </select>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">Project Details *</label>
-                <motion.textarea
+                <label className="block text-sm font-medium text-emerald-400 font-mono mb-2">
+                  Project Details *
+                </label>
+                <textarea
                   name="projectDetails"
                   value={formData.projectDetails}
                   onChange={handleInputChange}
                   rows={5}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all resize-vertical box-border"
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-white placeholder-gray-500 transition-all resize-vertical"
                   placeholder="Tell us about your project requirements, goals, and any specific details..."
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.8, ease: "easeInOut" }}
                 />
               </div>
-              <motion.button
+
+              <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
                 className="w-full bg-emerald-500 font-mono hover:bg-emerald-600 text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.6, delay: 0.9, ease: "easeInOut" }}
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
-              </motion.button>
+              </button>
+
               {submitMessage && (
-                <motion.div
-                  className="text-emerald-400 font-mono text-center font-medium bg-emerald-900/20 border border-emerald-500/30 rounded-lg py-3"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 1.0, ease: "easeInOut" }}
-                >
+                <div className="text-emerald-400 font-mono text-center font-medium bg-emerald-900/20 border border-emerald-500/30 rounded-lg py-3">
                   {submitMessage}
-                </motion.div>
+                </div>
               )}
-            </motion.div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 50 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="max-w-full"
-          >
-            <motion.div
-              className="mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-            >
+            </div>
+          </div>
+
+          {/* Company Info Section */}
+          <div>
+            <div className="mb-8">
               <img
                 src="/images/logo.png"
                 width={100}
                 alt="X-Web Labs Logo"
-                className="mb-4 max-w-full"
+                className="mb-4"
               />
-              <motion.p
-                className="text-gray-400 mb-6 font-body text-sm sm:text-base max-w-md"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-              >
+              <p className="text-gray-400 mb-6 max-w-md font-body">
                 Transforming businesses through AI automation and intelligent solutions. Your partner in digital innovation.
-              </motion.p>
-              <motion.div
-                className="space-y-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-              >
+              </p>
+                <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <Mail size={20} className="text-emerald-400 flex-shrink-0" />
                   <div>
-                    <motion.a
-                      href="mailto:xweblabs@gmail.com"
-                      className="text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer text-sm sm:text-base"
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      viewport={{ once: false }}
-                      transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
-                    >
-                      xweblabs@gmail.com
-                    </motion.a>
+                    <div>
+                      <a 
+                        href="mailto:xweblabs@gmail.com" 
+                        className="text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        xweblabs@gmail.com
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Phone size={20} className="text-emerald-400 flex-shrink-0 mt-1" />
                   <div>
                     <div className="space-y-1 mt-1">
-                      {["+61 450 803 578", "+263 777 350 003", "+263 785 401 678"].map((phone, idx) => (
-                        <motion.a
-                          key={idx}
-                          href={`https://wa.me/${phone.replace(/\s+/g, '')}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer text-sm sm:text-base"
-                          initial={{ opacity: 0, y: 10 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          viewport={{ once: false }}
-                          transition={{ duration: 0.6, delay: 0.5 + idx * 0.1, ease: "easeInOut" }}
-                        >
-                          {phone}
-                        </motion.a>
-                      ))}
+                      <a 
+                        href="https://wa.me/61450803578" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        +61 450 803 578
+                      </a>
+                      <a 
+                        href="https://wa.me/263777350003" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        +263 777 350 003
+                      </a>
+                      <a 
+                        href="https://wa.me/263785401678" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer"
+                      >
+                        +263 785 401 678
+                      </a>
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
-            <motion.div
-              className="grid md:grid-cols-2 gap-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeInOut" }}
-            >
+                </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <motion.h3
-                  className="text-white mb-4 font-display text-sm sm:text-base"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.5, ease: "easeInOut" }}
-                >
-                  Services
-                </motion.h3>
-                <motion.ul
-                  className="space-y-2 text-gray-400"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
-                >
-                  {services.map((service, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      viewport={{ once: false }}
-                      transition={{ duration: 0.6, delay: 0.7 + index * 0.1, ease: "easeInOut" }}
-                    >
-                      <a href="#" className="hover:text-emerald-400 font-mono transition-colors text-sm sm:text-base">{service}</a>
-                    </motion.li>
-                  ))}
-                </motion.ul>
+                <h3 className="text-white mb-4 font-display">Services</h3>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">AI Agents</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">AI Websites</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">SaaS</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">SEO Services</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">Generative Engine Optimization</a></li>
+                  <li><a href="#" className="hover:text-emerald-400 font-mono transition-colors">Automation Systems</a></li>
+                </ul>
               </div>
+              
               <div>
-                <motion.h3
-                  className="text-white mb-4 font-display text-sm sm:text-base"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.5, ease: "easeInOut" }}
-                >
-                  Company
-                </motion.h3>
-                <motion.ul
-                  className="space-y-2 text-gray-400"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
-                >
-                  {[
-                    { href: "#about", text: "About Us" },
-                    { href: "#projects", text: "Projects" },
-                    { href: "#contact", text: "Contact" }
-                  ].map((item, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      viewport={{ once: false }}
-                      transition={{ duration: 0.6, delay: 0.7 + index * 0.1, ease: "easeInOut" }}
-                    >
-                      <a href={item.href} className="hover:text-emerald-400 font-mono transition-colors text-sm sm:text-base">{item.text}</a>
-                    </motion.li>
-                  ))}
-                </motion.ul>
+                <h3 className="text-white mb-4 font-display">Company</h3>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#about" className="hover:text-emerald-400 font-mono transition-colors">About Us</a></li>
+                  <li><a href="#projects" className="hover:text-emerald-400 font-mono transition-colors">Projects</a></li>
+                  <li><a href="#contact" className="hover:text-emerald-400 font-mono transition-colors">Contact</a></li>
+                </ul>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
-        <motion.div
-          className="border-t border-gray-800 pt-8 text-center mt-5"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        >
-          <motion.p
-            className="text-gray-400 font-mono text-sm sm:text-base"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
-          >
-            © {new Date().getFullYear()} X-Web Labs. All rights reserved.
-          </motion.p>
-        </motion.div>
+        
+        <div className="border-t border-gray-800 pt-8 text-center">
+          <p className="text-gray-400 text-sm">
+            © 2025 X-Web Labs. All rights reserved. Powered by AI Innovation.
+          </p>
+        </div>
       </div>
     </footer>
   );
