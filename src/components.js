@@ -940,7 +940,7 @@ export const Services = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
           >
             Services That{" "}
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            <span className="gradient-text">
               Transform Businesses
             </span>
           </motion.h2>
