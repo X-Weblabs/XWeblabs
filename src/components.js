@@ -32,8 +32,8 @@ export const Header = () => {
           ? 'bg-black/90 backdrop-blur-lg shadow-2xl border border-gray-800' 
           : 'bg-black/10 backdrop-blur-sm border border-gray-700'
       } rounded-2xl max-w-full`}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={{ x: -100, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
       <div className="container mx-auto px-6 py-4 max-w-full">
@@ -41,7 +41,7 @@ export const Header = () => {
           {/* Logo */}
            <motion.img
               src="/images/logo.png"
-              animate={{ x: 10, rotate: 360 }}
+              animate={{ x: 10}}
               transition={{ duration: 2 }}
               style={{}}
               width={100}
