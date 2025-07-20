@@ -705,10 +705,6 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <div className="text-center backdrop-blur-sm bg-white/5 rounded-xl p-4 border border-white/10">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">50+</div>
-              <div className="text-xs sm:text-sm text-gray-400">Projects Delivered</div>
-            </div>
-            <div className="text-center backdrop-blur-sm bg-white/5 rounded-xl p-4 border border-white/10">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">100%</div>
               <div className="text-xs sm:text-sm text-gray-400">Client Satisfaction</div>
             </div>
@@ -1401,7 +1397,7 @@ export const AboutUs = () => {
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeInOut" }}
               >
                 <div className="text-center">
-                  <div className="text-3xl sm:text-4xl font-bold text-emerald-400 font-display">50+</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-400 font-display">Many</div>
                   <div className="text-xs sm:text-sm text-gray-400">Businesses Transformed</div>
                 </div>
                 <div className="text-center">
