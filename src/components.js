@@ -40,7 +40,7 @@ export const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
            <motion.img
-              src="/images/logo.png"
+              src="https://xweblabs.io/images/logo.png"
               animate={{ x: 10}}
               transition={{ duration: 2 }}
               style={{}}
@@ -577,7 +577,7 @@ export const Hero = () => {
       <div
         className="absolute inset-0 scale-110"
         style={{
-          backgroundImage: 'url("/images/abstract-digital.jpg")', // Ensure this image is dark and abstract
+          backgroundImage: 'url("https://xweblabs.io/images/abstract-digital.jpg")', // Ensure this image is dark and abstract
           backgroundSize: 'cover', // Use cover for better responsiveness
           backgroundPosition: 'center',
           filter: 'brightness(0.7) contrast(1.1)' // Slightly darken and add contrast if image is too bright
@@ -800,7 +800,7 @@ export const Services = () => {
         "WhatsApp, Web & omnichannel deployment"
       ],
       gradient: "from-emerald-500 to-teal-600",
-      image: "/images/AI.png",
+      image: "https://xweblabs.io/images/AI.png",
       stats: { clients: "150+", efficiency: "85%", support: "24/7" },
       count: "01",
     },
@@ -815,7 +815,7 @@ export const Services = () => {
         "Built-in SEO intelligence that ranks higher"
       ],
       gradient: "from-purple-500 to-pink-600",
-      image: "/images/AI2.png",
+      image: "https://xweblabs.io/images/AI2.png",
       stats: { projects: "200+", conversion: "+40%", speed: "99%" },
       count: "02",
     },
@@ -830,7 +830,7 @@ export const Services = () => {
         "Real-time dashboards that reveal growth opportunities"
       ],
       gradient: "from-indigo-500 to-purple-600",
-      image: "/images/saas.png",
+      image: "https://xweblabs.io/images/saas.png",
       stats: { users: "10K+", uptime: "99.9%", scale: "∞" },
       count: "03",
     },
@@ -845,7 +845,7 @@ export const Services = () => {
         "Performance tracking that proves ROI"
       ],
       gradient: "from-teal-500 to-emerald-600",
-      image: "/images/SEO2.png",
+      image: "https://xweblabs.io/images/SEO2.png",
       stats: { ranking: "+300%", traffic: "+150%", keywords: "500+" },
       count: "04",
     },
@@ -860,7 +860,7 @@ export const Services = () => {
         "Future-proof visibility across all AI platforms",
       ],
       gradient: "from-pink-500 to-rose-600",
-      image: "/images/geo.png",
+      image: "https://xweblabs.io/images/geo.png",
       stats: { visibility: "+250%", queries: "1M+", engines: "10+" },
       count: "05",
     },
@@ -875,7 +875,7 @@ export const Services = () => {
         "Business intelligence that predicts the future"
       ],
       gradient: "from-pink-500 to-purple-600",
-      image: "/images/auto2.png",
+      image: "https://xweblabs.io/images/auto2.png",
       stats: { automation: "95%", savings: "$50K+", time: "80%" },
       count: "06",
     },
@@ -1280,7 +1280,7 @@ export const AboutUs = () => {
   const teamCardStyle = {
     backgroundImage: `
       linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-      url("/images/abstract 2.jpg")
+      url("https://xweblabs.io/images/abstract 2.jpg")
     `,
     backgroundSize: 'cover, cover',
     backgroundPosition: 'center center, center center',
@@ -2089,7 +2089,7 @@ export const Footer = () => {
               transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
             >
               <img
-                src="/images/logo.png"
+                src="https://xweblabs.io/images/logo.png"
                 width={100}
                 alt="X-Web Labs Logo"
                 className="mb-4 max-w-full"
