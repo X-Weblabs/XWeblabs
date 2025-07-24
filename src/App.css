@@ -335,6 +335,15 @@ html {
   box-shadow: 0 20px 40px rgba(147, 51, 234, 0.2);
 }
 
+.serviceImage{
+  margin-top: 35px;
+}
+
+.servicesTop{
+  padding-top: 5rem ;
+  padding-bottom: 5rem ;
+}
+
 /* Responsive design helpers */
 @media (max-width: 768px) {
   .hero-text {
@@ -348,6 +357,15 @@ html {
   .section-title {
     font-size: clamp(2rem, 8vw, 3rem);
   }
+
+  .serviceImage{
+    margin-top: 0px;
+  }
+ 
+.servicesTop{
+  padding-top: 0.8rem ;
+  padding-bottom: 0.8rem ;
+}
 }
 
 /* Focus states for accessibility */

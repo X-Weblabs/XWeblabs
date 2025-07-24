@@ -2,18 +2,20 @@ import React, {useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 import { Mail, Phone } from 'lucide-react';
+import throttle from 'lodash.throttle'; // at the top
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+useEffect(() => {
+  const handleScroll = throttle(() => {
+    setIsScrolled(window.scrollY > 50);
+  }, 200); // throttled to 1 call every 200ms
+
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
 
   // Function to close mobile menu
   const closeMobileMenu = () => {
@@ -40,7 +42,7 @@ export const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
            <motion.img
-              src="https://xweblabs.io/images/logo.png"
+              src="/images/logo.png"
               animate={{ x: 10}}
               transition={{ duration: 2 }}
               style={{}}
@@ -52,15 +54,15 @@ export const Header = () => {
             <NavLink href="#hero">Home</NavLink>
             <NavLink href="#services">Services</NavLink>
             <NavLink href="#about">About</NavLink>
-            <NavLink href="#projects">Projects</NavLink>
-            <NavLink href="#contact">Contact</NavLink>
-            <motion.button
+            {/* <NavLink href="#projects">Projects</NavLink> */}
+            <NavLink href="#footer">Contact</NavLink>
+            {/* <motion.button
               className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-semibold tracking-wide"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Get Started
-            </motion.button>
+            </motion.button> */}
           </nav>
 
           {/* Mobile Menu Toggle */}
@@ -115,7 +117,6 @@ export const Header = () => {
     </motion.header>
   );
 };
-
 
 const NavLink = ({ href, children, mobile = false, onClose }) => {
   const handleClick = (e) => {
@@ -173,403 +174,7 @@ const NavLink = ({ href, children, mobile = false, onClose }) => {
 // Hero Component - Updated for a cleaner, professional look
 export const Hero = () => {
   const mountRef = useRef(null);
-  const sceneRef = useRef(null);
-  const rendererRef = useRef(null);
-  const cameraRef = useRef(null);
-  const objectsRef = useRef([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
   const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    if (!mountRef.current) return;
-
-    // Scene setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setClearColor(0x000000, 0);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    mountRef.current.appendChild(renderer.domElement);
-
-    // Store references
-    sceneRef.current = scene;
-    rendererRef.current = renderer;
-    cameraRef.current = camera;
-
-    // Camera position
-    camera.position.z = 8;
-
-    // Harmonized lighting
-    const ambientLight = new THREE.AmbientLight(0x1a1a2e, 0.4); // Slightly increased ambient light for better base visibility
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7); // Slightly reduced intensity
-    directionalLight.position.set(5, 5, 5);
-    directionalLight.castShadow = true;
-    scene.add(directionalLight);
-
-    // Subtler point lights, aligned with a refined palette
-    const pointLight1 = new THREE.PointLight(0x00aaff, 1.0, 50); // Clear blue
-    pointLight1.position.set(8, 8, 8);
-    scene.add(pointLight1);
-
-    const pointLight2 = new THREE.PointLight(0x8A2BE2, 0.8, 50); // Purple
-    pointLight2.position.set(-8, -8, 8);
-    scene.add(pointLight2);
-
-    const pointLight3 = new THREE.PointLight(0x40E0D0, 0.6, 50); // Turquoise
-    pointLight3.position.set(8, -8, -8);
-    scene.add(pointLight3);
-
-    // Create futuristic 3D objects with refined glass-like and glowing effects
-    const objects = [];
-
-    // 1. Glowing CPU/Chip with glass effect (Blue Focus)
-    const chipGeometry = new THREE.BoxGeometry(1.2, 1.2, 0.15);
-    const chipMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x00aaff, // Clear blue
-      emissive: 0x004488, // Deeper blue glow
-      emissiveIntensity: 0.3, // Subtler glow
-      metalness: 0.1,
-      roughness: 0.1,
-      transparent: true,
-      opacity: 0.6, // More transparent
-      transmission: 0.4,
-      thickness: 0.1,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1
-    });
-    const chip = new THREE.Mesh(chipGeometry, chipMaterial);
-    chip.position.set(-6, 3, -2);
-    chip.castShadow = true;
-    scene.add(chip);
-
-    const chipWireframe = new THREE.Mesh(
-      chipGeometry,
-      new THREE.MeshBasicMaterial({
-        color: 0x00aaff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.2 // Subtler wireframe
-      })
-    );
-    chipWireframe.position.copy(chip.position);
-    chip.add(chipWireframe);
-
-    objects.push({ mesh: chip, speed: 0.01, followStrength: 0.12, basePos: { x: -6, y: 3, z: -2 }, baseOpacity: 0.6, baseEmissiveIntensity: 0.3 });
-
-    // 2. Pulsing Neural Network Node with glass sphere (Purple Focus)
-    const nodeGeometry = new THREE.SphereGeometry(0.6, 32, 32);
-    const nodeMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x8A2BE2, // Purple
-      emissive: 0x4B0082, // Deeper purple glow
-      emissiveIntensity: 0.4, // Subtler glow
-      metalness: 0.0,
-      roughness: 0.0,
-      transparent: true,
-      opacity: 0.5, // More transparent
-      transmission: 0.6,
-      thickness: 0.2,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.0,
-      ior: 1.5
-    });
-    const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
-    node.position.set(6, -2, 1);
-    node.castShadow = true;
-    scene.add(node);
-
-    const nodeCore = new THREE.Mesh(
-      new THREE.SphereGeometry(0.3, 16, 16),
-      new THREE.MeshBasicMaterial({
-        color: 0x8A2BE2,
-        transparent: true,
-        opacity: 0.7 // Slightly reduced opacity
-      })
-    );
-    node.add(nodeCore);
-
-    objects.push({ mesh: node, speed: 0.015, followStrength: 0.15, basePos: { x: 6, y: -2, z: 1 }, baseOpacity: 0.5, baseEmissiveIntensity: 0.4 });
-
-    // 3. Rotating Data Crystal with prismatic effect (Turquoise Focus)
-    const crystalGeometry = new THREE.OctahedronGeometry(0.8);
-    const crystalMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x40E0D0, // Turquoise
-      emissive: 0x207068, // Subtle turquoise glow
-      emissiveIntensity: 0.2, // Very subtle glow
-      metalness: 0.0,
-      roughness: 0.0,
-      transparent: true,
-      opacity: 0.4, // More transparent
-      transmission: 0.8, // High transmission for clear glass
-      thickness: 0.3,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.0,
-      ior: 2.4,
-      dispersion: 0.1
-    });
-    const crystal = new THREE.Mesh(crystalGeometry, crystalMaterial);
-    crystal.position.set(-2, 5, -3);
-    crystal.castShadow = true;
-    scene.add(crystal);
-
-    const crystalEdges = new THREE.EdgesGeometry(crystalGeometry);
-    const crystalLines = new THREE.LineSegments(
-      crystalEdges,
-      new THREE.LineBasicMaterial({
-        color: 0x40E0D0,
-        transparent: true,
-        opacity: 0.5 // Subtler edges
-      })
-    );
-    crystal.add(crystalLines);
-
-    objects.push({ mesh: crystal, speed: 0.02, followStrength: 0.18, basePos: { x: -2, y: 5, z: -3 }, baseOpacity: 0.4, baseEmissiveIntensity: 0.2 });
-
-    // 4. Circuit Board Plane with holographic effect (Subtle Blue)
-    const circuitGeometry = new THREE.PlaneGeometry(2, 2);
-    const circuitMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x6495ED, // Cornflower Blue
-      emissive: 0x324A76, // Subtle glow
-      emissiveIntensity: 0.1, // Minimal self-emission
-      metalness: 0.2,
-      roughness: 0.3,
-      transparent: true,
-      opacity: 0.3, // Highly transparent
-      transmission: 0.5,
-      thickness: 0.1,
-      clearcoat: 0.8,
-      clearcoatRoughness: 0.2,
-      side: THREE.DoubleSide
-    });
-    const circuit = new THREE.Mesh(circuitGeometry, circuitMaterial);
-    circuit.position.set(-5, -3, 2);
-    circuit.castShadow = true;
-    scene.add(circuit);
-
-    objects.push({ mesh: circuit, speed: 0.008, followStrength: 0.1, basePos: { x: -5, y: -3, z: 2 }, baseOpacity: 0.3, baseEmissiveIntensity: 0.1 });
-
-    // 5. AI Brain Torus with inner glow (Subdued Purple)
-    const brainGeometry = new THREE.TorusGeometry(0.8, 0.3, 16, 32);
-    const brainMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x9370DB, // Medium Purple
-      emissive: 0x4A386D, // Deeper purple glow
-      emissiveIntensity: 0.3, // Subtler glow
-      metalness: 0.1,
-      roughness: 0.2,
-      transparent: true,
-      opacity: 0.6, // More transparent
-      transmission: 0.3,
-      thickness: 0.2,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1
-    });
-    const brain = new THREE.Mesh(brainGeometry, brainMaterial);
-    brain.position.set(5, 2, -1);
-    brain.castShadow = true;
-    scene.add(brain);
-
-    const brainGlow = new THREE.Mesh(
-      new THREE.TorusGeometry(0.6, 0.2, 8, 16),
-      new THREE.MeshBasicMaterial({
-        color: 0x9370DB,
-        transparent: true,
-        opacity: 0.3 // Subtler inner glow
-      })
-    );
-    brain.add(brainGlow);
-
-    objects.push({ mesh: brain, speed: 0.012, followStrength: 0.14, basePos: { x: 5, y: 2, z: -1 }, baseOpacity: 0.6, baseEmissiveIntensity: 0.3 });
-
-    // 6. Quantum Cube with holographic shimmer (Subtle Turquoise)
-    const quantumGeometry = new THREE.BoxGeometry(0.7, 0.7, 0.7);
-    const quantumMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x7FFFD4, // Aquamarine
-      emissive: 0x3F7F6A, // Deeper turquoise glow
-      emissiveIntensity: 0.4, // Subtler glow
-      metalness: 0.0,
-      roughness: 0.0,
-      transparent: true,
-      opacity: 0.4, // More transparent
-      transmission: 0.6,
-      thickness: 0.2,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.0,
-      ior: 1.8
-    });
-    const quantum = new THREE.Mesh(quantumGeometry, quantumMaterial);
-    quantum.position.set(1, 1, 3);
-    quantum.castShadow = true;
-    scene.add(quantum);
-
-    const quantumWireframe = new THREE.Mesh(
-      quantumGeometry,
-      new THREE.MeshBasicMaterial({
-        color: 0x7FFFD4,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.3 // Subtler wireframe
-      })
-    );
-    quantum.add(quantumWireframe);
-
-    objects.push({ mesh: quantum, speed: 0.018, followStrength: 0.16, basePos: { x: 1, y: 1, z: 3 }, baseOpacity: 0.4, baseEmissiveIntensity: 0.4 });
-
-    // 7. Glass Dodecahedron with prismatic edges (Subtle Purple)
-    const dodecaGeometry = new THREE.DodecahedronGeometry(0.9);
-    const dodecaMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xBA55D3, // Medium Orchid
-      emissive: 0x5D2B6B, // Deeper purple glow
-      emissiveIntensity: 0.3, // Subtler glow
-      metalness: 0.0,
-      roughness: 0.0,
-      transparent: true,
-      opacity: 0.5, // More transparent
-      transmission: 0.5,
-      thickness: 0.3,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.0,
-      ior: 2.0
-    });
-    const dodeca = new THREE.Mesh(dodecaGeometry, dodecaMaterial);
-    dodeca.position.set(4, -4, 0);
-    dodeca.castShadow = true;
-    scene.add(dodeca);
-
-    const dodecaEdges = new THREE.EdgesGeometry(dodecaGeometry);
-    const dodecaLines = new THREE.LineSegments(
-      dodecaEdges,
-      new THREE.LineBasicMaterial({
-        color: 0xBA55D3,
-        transparent: true,
-        opacity: 0.6 // Subtler edges
-      })
-    );
-    dodeca.add(dodecaLines);
-
-    objects.push({ mesh: dodeca, speed: 0.025, followStrength: 0.13, basePos: { x: 4, y: -4, z: 0 }, baseOpacity: 0.5, baseEmissiveIntensity: 0.3 });
-
-    objectsRef.current = objects;
-
-    // Mouse move handler
-    const handleMouseMove = (event) => {
-      mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    };
-
-    // Resize handler
-    const handleResize = () => {
-      if (!camera || !renderer) return;
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-
-    // Animation loop with enhanced interactivity and subtle effects
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      const time = Date.now() * 0.001;
-      const mouse = mouseRef.current;
-
-      objectsRef.current.forEach((obj, index) => {
-        const { mesh, speed, followStrength, basePos, baseOpacity, baseEmissiveIntensity } = obj;
-
-        // Subtle floating animation
-        const floatY = Math.sin(time * speed * 2 + index * 0.5) * 0.2; // Reduced float
-        const floatX = Math.cos(time * speed * 1.5 + index * 0.3) * 0.15; // Reduced float
-
-        // Fast cursor following (Spline-style)
-        const mouseInfluence = 5; // Moderate influence range
-        const targetX = basePos.x + (mouse.x * mouseInfluence) * followStrength;
-        const targetY = basePos.y + (mouse.y * mouseInfluence) * followStrength;
-        const targetZ = basePos.z + (mouse.x * mouseInfluence * 0.5) * followStrength;
-
-        // Smooth interpolation with faster response
-        const lerpSpeed = 0.08;
-        mesh.position.x += (targetX + floatX - mesh.position.x) * lerpSpeed;
-        mesh.position.y += (targetY + floatY - mesh.position.y) * lerpSpeed;
-        mesh.position.z += (targetZ - mesh.position.z) * lerpSpeed;
-
-        // Enhanced rotation with mouse influence
-        mesh.rotation.x += speed * 0.8 + mouse.y * 0.008; // Subtler mouse rotation
-        mesh.rotation.y += speed * 0.6 + mouse.x * 0.008; // Subtler mouse rotation
-        mesh.rotation.z += speed * 0.4;
-
-        // Pulsing effect based on mouse proximity (more subtle)
-        const distance = Math.sqrt(
-          Math.pow(mouse.x * 5, 2) + Math.pow(mouse.y * 5, 2)
-        );
-        const scale = 1 + (1 - Math.min(distance / 5, 1)) * 0.1; // Reduced pulse intensity
-        mesh.scale.setScalar(scale);
-
-        // Dynamic opacity and glow based on mouse distance (more subtle)
-        if (mesh.material.opacity !== undefined) {
-          const targetOpacity = baseOpacity + (1 - Math.min(distance / 3, 1)) * 0.1; // Reduced change
-          mesh.material.opacity = Math.min(1.0, Math.max(0.2, targetOpacity)); // Clamp values
-        }
-
-        if (mesh.material.emissiveIntensity !== undefined) {
-          const glowIntensity = baseEmissiveIntensity + (1 - Math.min(distance / 4, 1)) * 0.4; // Reduced change
-          mesh.material.emissiveIntensity = Math.min(1.0, Math.max(0.0, glowIntensity)); // Clamp values
-        }
-
-        // Animate transmission for glass effect
-        if (mesh.material.transmission !== undefined) {
-          const baseTransmission = obj.transmission || mesh.material.transmission; // Store initial
-          const targetTransmission = baseTransmission + Math.sin(time * 2 + index) * 0.05; // Smaller flicker
-          mesh.material.transmission = Math.max(0.2, targetTransmission);
-        }
-
-        // Animate clearcoat for dynamic reflections
-        if (mesh.material.clearcoat !== undefined) {
-          const baseClearcoat = obj.clearcoat || mesh.material.clearcoat; // Store initial
-          const targetClearcoat = baseClearcoat + Math.sin(time * 1.5 + index) * 0.1; // Smaller flicker
-          mesh.material.clearcoat = Math.max(0.5, targetClearcoat);
-        }
-      });
-
-      // Dynamic camera movement
-      camera.position.x += (mouse.x * 0.3 - camera.position.x) * 0.02; // Slightly reduced camera movement
-      camera.position.y += (mouse.y * 0.3 - camera.position.y) * 0.02;
-      camera.lookAt(0, 0, 0);
-
-      // Render
-      renderer.render(scene, camera);
-    };
-
-    // Event listeners
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('resize', handleResize);
-
-    // Start animation
-    animate();
-    setIsLoaded(true);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
-
-      // Dispose of Three.js objects
-      objectsRef.current.forEach(obj => {
-        if (obj.mesh.geometry) obj.mesh.geometry.dispose();
-        if (obj.mesh.material) obj.mesh.material.dispose();
-      });
-
-      if (renderer) {
-        renderer.dispose();
-      }
-    };
-  }, []);
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center pt-32 px-6 overflow-hidden">
@@ -577,7 +182,7 @@ export const Hero = () => {
       <div
         className="absolute inset-0 scale-110"
         style={{
-          backgroundImage: 'url("https://xweblabs.io/images/abstract-digital.jpg")', // Ensure this image is dark and abstract
+          backgroundImage: 'url("/images/abstract 2.jpg")', // Ensure this image is dark and abstract
           backgroundSize: 'cover', // Use cover for better responsiveness
           backgroundPosition: 'center',
           filter: 'brightness(0.7) contrast(1.1)' // Slightly darken and add contrast if image is too bright
@@ -585,7 +190,7 @@ export const Hero = () => {
       />
 
       {/* Modern Gradient Overlay */}
-      {/* <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/20 to-black/80" />  */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/60 to-black/20" /> 
 
       {/* Animated Grid Pattern */}
       <div
@@ -762,6 +367,8 @@ export const ClientLogos = () => {
                 ease: "linear",
               },
             }}
+            whileInView={{ x: ['0%', '-25%'] }}
+            viewport={{ once: false, amount: 0.5 }}
           >
             {duplicatedLogos.map((logo, index) => (
               <motion.div
@@ -800,7 +407,7 @@ export const Services = () => {
         "WhatsApp, Web & omnichannel deployment"
       ],
       gradient: "from-emerald-500 to-teal-600",
-      image: "https://xweblabs.io/images/AI.png",
+      image: "/images/AI.png",
       stats: { clients: "150+", efficiency: "85%", support: "24/7" },
       count: "01",
     },
@@ -815,7 +422,7 @@ export const Services = () => {
         "Built-in SEO intelligence that ranks higher"
       ],
       gradient: "from-purple-500 to-pink-600",
-      image: "https://xweblabs.io/images/AI2.png",
+      image: "/images/AI2.png",
       stats: { projects: "200+", conversion: "+40%", speed: "99%" },
       count: "02",
     },
@@ -830,7 +437,7 @@ export const Services = () => {
         "Real-time dashboards that reveal growth opportunities"
       ],
       gradient: "from-indigo-500 to-purple-600",
-      image: "https://xweblabs.io/images/saas.png",
+      image: "/images/saas.png",
       stats: { users: "10K+", uptime: "99.9%", scale: "∞" },
       count: "03",
     },
@@ -845,7 +452,7 @@ export const Services = () => {
         "Performance tracking that proves ROI"
       ],
       gradient: "from-teal-500 to-emerald-600",
-      image: "https://xweblabs.io/images/SEO2.png",
+      image: "/images/SEO2.png",
       stats: { ranking: "+300%", traffic: "+150%", keywords: "500+" },
       count: "04",
     },
@@ -860,7 +467,7 @@ export const Services = () => {
         "Future-proof visibility across all AI platforms",
       ],
       gradient: "from-pink-500 to-rose-600",
-      image: "https://xweblabs.io/images/geo.png",
+      image: "/images/geo.png",
       stats: { visibility: "+250%", queries: "1M+", engines: "10+" },
       count: "05",
     },
@@ -875,42 +482,43 @@ export const Services = () => {
         "Business intelligence that predicts the future"
       ],
       gradient: "from-pink-500 to-purple-600",
-      image: "https://xweblabs.io/images/auto2.png",
+      image: "/images/auto2.png",
       stats: { automation: "95%", savings: "$50K+", time: "80%" },
       count: "06",
     },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const servicesSection = document.getElementById("services");
-      if (!servicesSection) return;
+useEffect(() => {
+  const handleScroll = throttle(() => {
+    const servicesSection = document.getElementById("services");
+    if (!servicesSection) return;
 
-      const sectionTop = servicesSection.offsetTop;
-      const sectionHeight = servicesSection.offsetHeight;
-      const scrollTop = window.pageYOffset;
-      const windowHeight = window.innerHeight;
+    const sectionTop = servicesSection.offsetTop;
+    const sectionHeight = servicesSection.offsetHeight;
+    const scrollTop = window.pageYOffset;
+    const windowHeight = window.innerHeight;
 
-      if (scrollTop >= sectionTop - windowHeight / 2 && scrollTop <= sectionTop + sectionHeight - windowHeight / 2) {
-        const relativeScroll = scrollTop - sectionTop + windowHeight / 2;
-        const serviceHeight = sectionHeight / services.length;
-        const newActiveService = Math.floor(relativeScroll / serviceHeight);
+    if (scrollTop >= sectionTop - windowHeight / 2 && scrollTop <= sectionTop + sectionHeight - windowHeight / 2) {
+      const relativeScroll = scrollTop - sectionTop + windowHeight / 2;
+      const serviceHeight = sectionHeight / services.length;
+      const newActiveService = Math.floor(relativeScroll / serviceHeight);
 
-        if (newActiveService >= 0 && newActiveService < services.length) {
-          setActiveService(newActiveService);
-        }
+      if (newActiveService >= 0 && newActiveService < services.length) {
+        setActiveService(newActiveService);
       }
-    };
+    }
+  }, 200); // throttle scroll updates to once every 200ms
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [services.length]);
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [services.length]);
+
 
   return (
     <section id="services" className="bg-gradient-to-br from-gray-50 to-gray-100 text-black">
-      <div className="container mx-auto px-6 py-20">
+      <div className="container mx-auto px-6">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10 pt-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 30 }}
@@ -959,7 +567,7 @@ export const Services = () => {
               {services.map((service, index) => (
                 <motion.div
                   key={index}
-                  className="space-y-6 lg:space-y-8 py-8 lg:py-16 lg:min-h-screen lg:flex lg:flex-col lg:justify-center"
+                  className="space-y-6 lg:space-y-8 py-2 lg:py-16 lg:min-h-screen lg:flex lg:flex-col lg:justify-center"
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
@@ -991,7 +599,7 @@ export const Services = () => {
                   </motion.div>
                   <div className="lg:hidden mb-6">
                     <motion.div
-                      className="relative rounded-2xl overflow-hidden shadow-xl"
+                      className="relative rounded-2xl overflow-hidden shadow-xl lg:pt-10"
                       initial={{ opacity: 0, scale: 0.95 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
@@ -1075,7 +683,7 @@ export const Services = () => {
               ))}
             </div>
             <div className="hidden lg:block sticky top-24 h-[calc(100vh-6rem)] flex items-center justify-center">
-              <div className="relative w-full max-w-2xl">
+              <div className="relative w-full max-w-2xl serviceImage">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`image-${activeService}`}
@@ -1149,12 +757,12 @@ export const AboutUs = () => {
     },
     {
       name: "Pious Ncube",
-      role: "Operations Excellence Director",
+      role: "Operations Manager",
       bio: "The execution master who ensures every project exceeds expectations. Operational perfection meets client delight."
     },
     {
       name: "Decent Ncube",
-      role: "DevOps & Infrastructure Architect",
+      role: "DevOps Engineer",
       bio: "The infrastructure genius who builds unbreakable systems. Your success runs on his bulletproof architecture."
     }
   ];
@@ -1202,7 +810,7 @@ export const AboutUs = () => {
     const colors = [0x3b82f6, 0x06b6d4, 0x8b5cf6];
     const rings = [];
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 4; i++) {
       const geometry = new THREE.RingGeometry(0.8, 1.2, 32);
       const material = new THREE.MeshBasicMaterial({
         color: colors[i % colors.length],
@@ -1231,8 +839,11 @@ export const AboutUs = () => {
       mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
+    let animationFrameId;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
+      if (!mountRef.current) return;
+
       const time = Date.now() * 0.001;
 
       rings.forEach((ring, index) => {
@@ -1246,17 +857,22 @@ export const AboutUs = () => {
         const scale = 1 + Math.sin(time * 2 + index) * 0.3;
         ring.scale.set(scale, scale, scale);
         if (isHeroVisible) {
-          ring.material.opacity = Math.max(0, ring.material.opacity - 0.02);
+          ring.material.opacity = Math.max(0, ring.material.opacity - 0.01);
         } else {
           const targetOpacity = 0.2 + Math.sin(time + index) * 0.1;
-          ring.material.opacity = Math.min(targetOpacity, ring.material.opacity + 0.02);
+          ring.material.opacity = Math.min(targetOpacity, ring.material.opacity + 0.01);
         }
       });
 
       renderer.render(scene, camera);
+      return () => {
+        cancelAnimationFrame(animationFrameId);
+        // cleanup
+      };
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    const throttledMouseMove = throttle(handleMouseMove, 100); // 10fps
+    window.addEventListener('mousemove', throttledMouseMove);
     animate();
 
     const handleResize = () => {
@@ -1280,7 +896,7 @@ export const AboutUs = () => {
   const teamCardStyle = {
     backgroundImage: `
       linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-      url("https://xweblabs.io/images/abstract 2.jpg")
+      url("/images/abstract 2.jpg")
     `,
     backgroundSize: 'cover, cover',
     backgroundPosition: 'center center, center center',
@@ -1873,7 +1489,8 @@ export const Footer = () => {
     'SaaS',
     'SEO Services',
     'Generative Engine Optimization',
-    'Automation Systems'
+    'Automation Systems',
+    'Other'
   ];
 
   const industries = [
@@ -1921,7 +1538,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-black text-white py-12 px-4 overflow-x-hidden">
+    <footer id='footer' className="bg-black text-white py-12 px-4 overflow-x-hidden">
       <div className="container mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-8">
           <motion.div
@@ -2089,7 +1706,7 @@ export const Footer = () => {
               transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
             >
               <img
-                src="https://xweblabs.io/images/logo.png"
+                src="/images/logo.png"
                 width={100}
                 alt="X-Web Labs Logo"
                 className="mb-4 max-w-full"
@@ -2116,7 +1733,7 @@ export const Footer = () => {
                   <Mail size={20} className="text-emerald-400 flex-shrink-0" />
                   <div>
                     <motion.a
-                      href="mailto:xweblabs@gmail.com"
+                      href="mailto:info@xweblabs.io"
                       className="text-gray-300 hover:text-emerald-400 transition-colors duration-300 cursor-pointer text-sm sm:text-base"
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -2124,9 +1741,9 @@ export const Footer = () => {
                       viewport={{ once: false }}
                       transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
                     >
-                      xweblabs@gmail.com
+                      info@xweblabs.io
                     </motion.a>
-                  </div>
+                    </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Phone size={20} className="text-emerald-400 flex-shrink-0 mt-1" />
